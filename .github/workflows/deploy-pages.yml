@@ -28,10 +28,16 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      - name: Prepare static files
+        run: |
+          mkdir -p public
+          cp index.html public/index.html
+          cp samuhita_blueprint.html public/samuhita_blueprint.html
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: ./public
 
       - name: Deploy to GitHub Pages
         id: deployment
