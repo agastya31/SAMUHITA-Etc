@@ -1,0 +1,2308 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Samuhita Blueprint v2.2</title>
+</head>
+<body>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=JetBrains+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --ink: #0e0b1a;
+  --ink2: #1c1730;
+  --saffron: #e8941a;
+  --saffron2: #f5b843;
+  --indigo: #4f3bff;
+  --indigo-soft: #7c6fff;
+  --lotus: #c45c7a;
+  --teal: #1dbf9a;
+  --stone: #8b8098;
+  --stone2: #b8afc6;
+  --surface: #17122a;
+  --surface2: #221b3a;
+  --surface3: #2d2447;
+  --border: rgba(232,148,26,0.18);
+  --border2: rgba(255,255,255,0.07);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body, .root {
+  background: var(--ink);
+  color: var(--stone2);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.root { padding: 0; }
+
+/* ── Header ── */
+.hero {
+  position: relative;
+  padding: 36px 40px 32px;
+  background: linear-gradient(135deg, #0e0b1a 0%, #1c1030 50%, #0e0b1a 100%);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 80% 50%, rgba(79,59,255,0.12) 0%, transparent 65%),
+              radial-gradient(ellipse at 20% 80%, rgba(232,148,26,0.08) 0%, transparent 55%);
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(232,148,26,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232,148,26,0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.hero-inner { position: relative; display: flex; align-items: center; gap: 24px; }
+.logo-mark {
+  width: 56px; height: 56px; flex-shrink: 0;
+  background: var(--surface2);
+  border: 1.5px solid rgba(232,148,26,0.4);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  box-shadow: 0 0 24px rgba(232,148,26,0.12);
+}
+.logo-mark svg { width: 30px; height: 30px; }
+.app-name {
+  font-family: 'Cinzel', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+.app-name span { color: var(--saffron); }
+.app-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--stone);
+  letter-spacing: 0.12em;
+  margin-top: 5px;
+  text-transform: uppercase;
+}
+.hero-meta {
+  margin-left: auto;
+  text-align: right;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+}
+.badge-kotlin { background: rgba(79,59,255,0.18); color: var(--indigo-soft); border: 1px solid rgba(79,59,255,0.3); }
+.badge-p2p    { background: rgba(29,191,154,0.12); color: var(--teal); border: 1px solid rgba(29,191,154,0.25); }
+.badge-offline { background: rgba(232,148,26,0.12); color: var(--saffron); border: 1px solid rgba(232,148,26,0.25); }
+
+/* ── Tabs ── */
+.tabs-bar {
+  display: flex;
+  gap: 0;
+  background: var(--ink2);
+  border-bottom: 1px solid var(--border2);
+  padding: 0 40px;
+  overflow-x: auto;
+}
+.tab-btn {
+  padding: 12px 20px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--stone);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  transition: color 0.2s, border-color 0.2s;
+}
+.tab-btn.active { color: var(--saffron); border-bottom-color: var(--saffron); }
+.tab-btn:hover:not(.active) { color: var(--stone2); }
+
+/* ── Content ── */
+.tab-panel { display: none; padding: 32px 40px; }
+.tab-panel.active { display: block; }
+
+/* ── Section title ── */
+.sec-title {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--saffron);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.sec-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* ── File Tree ── */
+.tree { font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.9; }
+.tree-item { display: flex; align-items: center; gap: 6px; cursor: pointer; padding: 1px 0; }
+.tree-item:hover .tree-label { color: #fff; }
+.tree-indent { display: flex; flex-direction: column; margin-left: 18px; padding-left: 12px; border-left: 1px solid var(--border2); }
+.tree-icon { font-size: 11px; width: 14px; flex-shrink: 0; }
+.tree-label { color: var(--stone2); transition: color 0.15s; }
+.tree-label.dir { color: var(--saffron2); font-weight: 500; }
+.tree-label.kt  { color: #a8b3ff; }
+.tree-label.xml { color: #7dcfb6; }
+.tree-label.gradle { color: var(--lotus); }
+.tree-label.json { color: #e5c07b; }
+.tree-label.md { color: #98c379; }
+.tree-comment { color: var(--stone); font-size: 11px; margin-left: 8px; }
+.tree-children { overflow: hidden; transition: max-height 0.25s ease; }
+.tree-children.collapsed { max-height: 0; }
+.toggle-btn { background: none; border: none; cursor: pointer; padding: 0; font-size: 10px; color: var(--stone); width: 12px; }
+
+/* ── Architecture ── */
+.arch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.arch-layer {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+}
+.arch-layer::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+}
+.arch-layer.presentation::before { background: var(--indigo-soft); }
+.arch-layer.domain::before       { background: var(--saffron); }
+.arch-layer.data::before         { background: var(--teal); }
+.arch-layer.network::before      { background: var(--lotus); }
+.layer-title {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.arch-layer.presentation .layer-title { color: var(--indigo-soft); }
+.arch-layer.domain       .layer-title { color: var(--saffron); }
+.arch-layer.data         .layer-title { color: var(--teal); }
+.arch-layer.network      .layer-title { color: var(--lotus); }
+.component-list { display: flex; flex-direction: column; gap: 6px; }
+.component-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 10px;
+  background: var(--surface2);
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--stone2);
+}
+.component-item .dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.presentation .dot { background: var(--indigo-soft); }
+.domain       .dot { background: var(--saffron); }
+.data         .dot { background: var(--teal); }
+.network      .dot { background: var(--lotus); }
+.component-sub { font-size: 10px; color: var(--stone); margin-left: auto; }
+
+/* ── Tech Stack ── */
+.stack-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.stack-card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 16px;
+}
+.stack-cat {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--stone);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+.stack-item { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--border2); }
+.stack-item:last-child { border-bottom: none; }
+.stack-name { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #fff; }
+.stack-ver  { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--stone); }
+
+/* ── Modules ── */
+.modules-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+.module-card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 16px;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.15s;
+}
+.module-card:hover { border-color: rgba(232,148,26,0.35); transform: translateY(-1px); }
+.module-icon { font-size: 20px; margin-bottom: 8px; }
+.module-name { font-family: 'Cinzel', serif; font-size: 12px; font-weight: 600; color: var(--saffron2); margin-bottom: 4px; }
+.module-desc { font-size: 11px; color: var(--stone); line-height: 1.5; }
+.module-files { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 4px; }
+.mf-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  padding: 2px 6px;
+  background: var(--surface2);
+  border-radius: 4px;
+  color: var(--stone);
+}
+
+/* ── Code Block ── */
+.code-block {
+  background: #0d0b18;
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  line-height: 1.75;
+  margin-bottom: 14px;
+}
+.code-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 7px 14px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border2);
+  font-size: 10px;
+  color: var(--stone);
+  letter-spacing: 0.06em;
+}
+.code-lang { color: var(--saffron2); font-weight: 500; }
+.code-body { padding: 14px 18px; white-space: pre; overflow-x: auto; color: #cdd6f4; }
+.c-kw  { color: #cba6f7; }
+.c-an  { color: #89b4fa; }
+.c-ty  { color: #89dceb; }
+.c-st  { color: #a6e3a1; }
+.c-co  { color: #6c7086; font-style: italic; }
+.c-nm  { color: #fab387; }
+.c-pr  { color: #f38ba8; }
+.c-xml-tag { color: #89dceb; }
+.c-xml-attr { color: #f38ba8; }
+.c-xml-val { color: #a6e3a1; }
+
+/* ── Schema Cards ── */
+.schema-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+.schema-card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.schema-head {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border2);
+  display: flex; align-items: center; gap: 8px;
+}
+.schema-table-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; font-weight: 600;
+  color: var(--saffron2);
+}
+.schema-entity { font-size: 10px; color: var(--stone); margin-left: auto; }
+.schema-fields { padding: 8px 0; }
+.schema-field {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+}
+.schema-field:hover { background: var(--surface2); }
+.field-pk { color: var(--saffron); font-size: 9px; font-weight: 700; background: rgba(232,148,26,0.15); padding: 1px 4px; border-radius: 3px; flex-shrink: 0; }
+.field-fk { color: var(--teal); font-size: 9px; font-weight: 700; background: rgba(29,191,154,0.12); padding: 1px 4px; border-radius: 3px; flex-shrink: 0; }
+.field-idx { color: var(--indigo-soft); font-size: 9px; font-weight: 700; background: rgba(79,59,255,0.15); padding: 1px 4px; border-radius: 3px; flex-shrink: 0; }
+.field-name { color: #cdd6f4; flex: 1; }
+.field-type { color: var(--indigo-soft); font-size: 10px; }
+.field-note { color: var(--stone); font-size: 9.5px; margin-left: auto; }
+.schema-rel {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 20px;
+  display: flex; gap: 24px; align-items: center; justify-content: center; flex-wrap: wrap;
+}
+.rel-item { display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--stone2); }
+.rel-arrow { color: var(--saffron); font-size: 16px; }
+
+/* ── Lifecycle Flow ── */
+.lifecycle-flow {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin-bottom: 24px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.lc-step {
+  flex: 1;
+  min-width: 140px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 0;
+  padding: 16px 14px;
+  position: relative;
+  text-align: center;
+}
+.lc-step:first-child { border-radius: 10px 0 0 10px; }
+.lc-step:last-child  { border-radius: 0 10px 10px 0; }
+.lc-step::after {
+  content: '→';
+  position: absolute; right: -14px; top: 50%; transform: translateY(-50%);
+  color: var(--saffron); font-size: 18px; z-index: 1;
+  font-weight: 700;
+}
+.lc-step:last-child::after { display: none; }
+.lc-num {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: rgba(232,148,26,0.15);
+  border: 1px solid rgba(232,148,26,0.4);
+  color: var(--saffron);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 8px;
+}
+.lc-name { font-family: 'Cinzel', serif; font-size: 11px; color: #fff; margin-bottom: 6px; }
+.lc-cb { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; color: var(--stone); line-height: 1.6; }
+.lc-cb span { color: var(--teal); display: block; }
+.lifecycle-detail { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.lc-card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 16px;
+}
+.lc-card-title { font-family: 'Cinzel', serif; font-size: 11px; color: var(--saffron2); margin-bottom: 10px; }
+.lc-note { font-size: 12px; color: var(--stone2); line-height: 1.65; }
+.lc-note strong { color: var(--saffron); }
+
+/* ── Roadmap Timeline ── */
+.roadmap { display: flex; flex-direction: column; gap: 10px; }
+.phase-card {
+  display: flex; gap: 0;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.phase-card:hover { border-color: rgba(232,148,26,0.3); }
+.phase-sidebar {
+  width: 90px; flex-shrink: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 16px 8px;
+  border-right: 1px solid var(--border2);
+  gap: 4px;
+}
+.phase-num {
+  font-family: 'Cinzel', serif; font-size: 18px; font-weight: 700;
+  color: var(--saffron);
+}
+.phase-days {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  color: var(--stone); text-align: center;
+}
+.phase-status {
+  font-size: 8px; font-weight: 700; letter-spacing: 0.1em;
+  padding: 2px 6px; border-radius: 10px; text-transform: uppercase; margin-top: 4px;
+}
+.status-done    { background: rgba(29,191,154,0.15); color: var(--teal); border: 1px solid rgba(29,191,154,0.3); }
+.status-active  { background: rgba(232,148,26,0.15); color: var(--saffron); border: 1px solid rgba(232,148,26,0.3); }
+.status-todo    { background: rgba(139,128,152,0.12); color: var(--stone); border: 1px solid rgba(139,128,152,0.2); }
+.phase-card-done { border-left: 3px solid rgba(29,191,154,0.5); }
+.phase-card-active { border-left: 3px solid rgba(232,148,26,0.5); }
+.task-check { color: var(--teal); font-size: 11px; margin-top: 3px; flex-shrink: 0; }
+.phase-body { flex: 1; padding: 14px 18px; }
+.phase-title { font-family: 'Cinzel', serif; font-size: 12px; color: #fff; margin-bottom: 8px; }
+.phase-tasks { display: flex; flex-direction: column; gap: 5px; }
+.phase-task { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: var(--stone2); }
+.task-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--saffron); margin-top: 6px; flex-shrink: 0; }
+.phase-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+.phase-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  padding: 2px 7px; border-radius: 4px;
+  background: var(--surface2); color: var(--stone); border: 1px solid var(--border2);
+}
+
+/* ── Permissions ── */
+.perm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+.perm-card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.perm-head {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border2);
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--stone);
+}
+.perm-head-icon { font-size: 14px; }
+.perm-head-title { color: var(--stone2); font-weight: 500; }
+.perm-head-api { margin-left: auto; color: var(--saffron); font-size: 9px; }
+.perm-list { padding: 8px 0; }
+.perm-item { padding: 6px 14px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; }
+.perm-name { color: #89dceb; }
+.perm-sdk { font-size: 9px; color: var(--stone); margin-left: 8px; }
+.perm-warn { font-size: 9px; color: var(--lotus); margin-left: 4px; }
+
+/* ── UI Views / Phone Mockup ── */
+.views-intro {
+  font-size: 13px; color: var(--stone2); line-height: 1.65;
+  margin-bottom: 24px; max-width: 680px;
+}
+.screens-grid {
+  display: flex; gap: 28px; flex-wrap: wrap; justify-content: center;
+  margin-bottom: 32px;
+}
+.screen-wrap {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.screen-label {
+  font-family: 'Cinzel', serif; font-size: 11px; font-weight: 600;
+  color: var(--saffron); letter-spacing: 0.08em; text-transform: uppercase;
+}
+.screen-desc {
+  font-size: 11px; color: var(--stone); max-width: 200px; text-align: center; line-height: 1.5;
+}
+/* Phone shell */
+.phone {
+  width: 200px;
+  background: #0a0812;
+  border: 2px solid rgba(255,255,255,0.14);
+  border-radius: 28px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.phone-notch {
+  width: 56px; height: 10px;
+  background: #0a0812;
+  border: 1.5px solid rgba(255,255,255,0.1);
+  border-radius: 0 0 8px 8px;
+  margin: 0 auto;
+  position: relative; z-index: 2;
+}
+.phone-statusbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 4px 12px 2px;
+  font-family: 'JetBrains Mono', monospace; font-size: 8px;
+  color: rgba(255,255,255,0.5);
+}
+.phone-screen {
+  min-height: 380px;
+  background: #100c1f;
+  position: relative;
+  overflow: hidden;
+}
+/* App topbar */
+.s-topbar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 12px 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.s-topbar-title {
+  font-family: 'Cinzel', serif; font-size: 12px; font-weight: 700;
+  color: var(--saffron2); flex: 1;
+}
+.s-topbar-icon { font-size: 13px; }
+.s-topbar-sub { font-size: 8.5px; color: var(--stone); font-family: 'JetBrains Mono', monospace; }
+/* Bottom nav */
+.s-bottomnav {
+  display: flex; border-top: 1px solid rgba(255,255,255,0.07);
+  background: #0d0b1c;
+}
+.s-nav-item {
+  flex: 1; padding: 6px 0; display: flex; flex-direction: column;
+  align-items: center; gap: 2px; cursor: pointer;
+}
+.s-nav-icon { font-size: 14px; }
+.s-nav-lbl { font-size: 7.5px; color: var(--stone); font-family: 'JetBrains Mono', monospace; }
+.s-nav-item.active .s-nav-lbl { color: var(--saffron); }
+/* --- Screen 1: Radar --- */
+.radar-ring-area {
+  display: flex; justify-content: center; align-items: center;
+  height: 200px; position: relative;
+}
+.radar-ring-area svg { position: absolute; }
+.peer-dot {
+  position: absolute;
+  width: 32px; height: 32px;
+  background: var(--surface2);
+  border: 1.5px solid rgba(232,148,26,0.5);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  box-shadow: 0 0 8px rgba(232,148,26,0.2);
+}
+.peer-dot.self { background: rgba(79,59,255,0.3); border-color: var(--indigo-soft); box-shadow: 0 0 10px rgba(79,59,255,0.4); }
+.peer-lbl { font-family: 'JetBrains Mono', monospace; font-size: 7px; color: var(--stone2); position: absolute; bottom: -14px; left: 50%; transform: translateX(-50%); white-space: nowrap; }
+.radar-status {
+  text-align: center; padding: 0 12px 8px;
+  font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--teal);
+}
+.radar-peer-list { padding: 0 10px 6px; }
+.rpl-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 8px; border-radius: 7px; margin-bottom: 4px;
+  background: var(--surface2); cursor: pointer;
+}
+.rpl-avatar {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: rgba(79,59,255,0.25); border: 1.5px solid rgba(79,59,255,0.5);
+  display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;
+}
+.rpl-info { flex: 1; }
+.rpl-name { font-size: 10px; color: #fff; font-weight: 500; }
+.rpl-dist { font-family: 'JetBrains Mono', monospace; font-size: 7.5px; color: var(--stone); }
+.rpl-action {
+  padding: 3px 7px; border-radius: 4px;
+  background: rgba(232,148,26,0.15); border: 1px solid rgba(232,148,26,0.3);
+  font-size: 7.5px; color: var(--saffron); font-family: 'JetBrains Mono', monospace;
+}
+.rpl-action.paired { background: rgba(29,191,154,0.12); border-color: rgba(29,191,154,0.3); color: var(--teal); }
+/* --- Screen 2: Conversations --- */
+.conv-list { padding: 6px 0; }
+.conv-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 10px; cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.conv-item:hover { background: var(--surface2); }
+.conv-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--surface2); border: 1.5px solid;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+.conv-avatar.online { border-color: var(--teal); box-shadow: 0 0 6px rgba(29,191,154,0.4); }
+.conv-avatar.offline { border-color: rgba(255,255,255,0.1); }
+.conv-body { flex: 1; min-width: 0; }
+.conv-name { font-size: 10px; color: #fff; font-weight: 500; }
+.conv-preview { font-size: 8.5px; color: var(--stone); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
+.conv-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+.conv-time { font-family: 'JetBrains Mono', monospace; font-size: 7.5px; color: var(--stone); }
+.conv-badge {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--saffron); color: #000;
+  font-size: 7px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+/* --- Screen 3: Chat --- */
+.chat-msgs { padding: 8px 10px; display: flex; flex-direction: column; gap: 6px; min-height: 270px; }
+.msg-row { display: flex; }
+.msg-row.in  { justify-content: flex-start; }
+.msg-row.out { justify-content: flex-end; }
+.msg-bubble {
+  max-width: 75%; padding: 6px 9px; border-radius: 10px;
+  font-size: 9.5px; line-height: 1.4;
+}
+.msg-row.in  .msg-bubble { background: var(--surface2); border-bottom-left-radius: 3px; color: var(--stone2); }
+.msg-row.out .msg-bubble { background: rgba(79,59,255,0.3); border-bottom-right-radius: 3px; color: #d0caff; border: 1px solid rgba(79,59,255,0.4); }
+.msg-time { font-family: 'JetBrains Mono', monospace; font-size: 7px; color: var(--stone); margin-top: 2px; }
+.msg-status { font-size: 7px; color: var(--teal); }
+.msg-file {
+  display: flex; align-items: center; gap: 5px;
+  background: rgba(255,255,255,0.06); border-radius: 6px;
+  padding: 5px 7px; max-width: 80%; margin: 0 10px;
+}
+.msg-file-icon { font-size: 14px; }
+.msg-file-info .msg-file-name { font-size: 8.5px; color: var(--stone2); }
+.msg-file-info .msg-file-size { font-family: 'JetBrains Mono', monospace; font-size: 7px; color: var(--stone); }
+.chat-bar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 10px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  background: #0d0b1c;
+}
+.chat-bar-input {
+  flex: 1; height: 24px;
+  background: var(--surface2); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px; padding: 0 8px;
+  font-size: 8.5px; color: var(--stone);
+}
+.chat-bar-send {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--indigo); display: flex; align-items: center; justify-content: center;
+  font-size: 10px; cursor: pointer;
+}
+.chat-bar-attach { font-size: 13px; cursor: pointer; }
+/* --- Screen 4: Settings --- */
+.settings-profile {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 14px 0 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.settings-avatar {
+  width: 46px; height: 46px; border-radius: 50%;
+  background: rgba(79,59,255,0.25); border: 2px solid var(--indigo-soft);
+  display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 6px;
+}
+.settings-name { font-size: 11px; color: #fff; font-weight: 500; }
+.settings-id { font-family: 'JetBrains Mono', monospace; font-size: 7.5px; color: var(--stone); margin-top: 1px; }
+.settings-list { padding: 6px 0; }
+.settings-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.settings-item-icon { font-size: 13px; width: 18px; text-align: center; }
+.settings-item-label { font-size: 9.5px; color: var(--stone2); flex: 1; }
+.settings-item-value { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--stone); }
+.settings-toggle {
+  width: 26px; height: 14px; border-radius: 7px;
+  position: relative;
+}
+.settings-toggle.on  { background: var(--teal); }
+.settings-toggle.off { background: rgba(255,255,255,0.1); }
+.settings-toggle::after {
+  content: '';
+  width: 10px; height: 10px; border-radius: 50%; background: #fff;
+  position: absolute; top: 2px; transition: left 0.2s;
+}
+.settings-toggle.on::after  { left: 14px; }
+.settings-toggle.off::after { left: 2px; }
+/* Pairing dialog overlay */
+.pairing-overlay {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex; align-items: flex-end;
+  z-index: 10;
+}
+.pairing-sheet {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px 16px 0 0;
+  padding: 14px 14px 20px;
+}
+.pairing-handle {
+  width: 28px; height: 3px; border-radius: 2px;
+  background: rgba(255,255,255,0.15); margin: 0 auto 12px;
+}
+.pairing-title { font-family: 'Cinzel', serif; font-size: 10px; color: var(--saffron); text-align: center; margin-bottom: 4px; }
+.pairing-peer { font-size: 9px; color: var(--stone2); text-align: center; margin-bottom: 10px; }
+.pairing-pin {
+  background: #0d0b1c; border: 1px solid rgba(232,148,26,0.3);
+  border-radius: 8px; padding: 8px; text-align: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 700;
+  color: var(--saffron); letter-spacing: 0.2em; margin-bottom: 10px;
+}
+.pairing-sub { font-size: 7.5px; color: var(--stone); text-align: center; margin-bottom: 12px; line-height: 1.4; }
+.pairing-btns { display: flex; gap: 8px; }
+.pairing-btn {
+  flex: 1; padding: 7px; border-radius: 7px;
+  font-size: 9px; font-weight: 600; font-family: 'DM Sans', sans-serif;
+  text-align: center; cursor: pointer;
+}
+.pairing-btn.reject { background: rgba(196,92,122,0.15); border: 1px solid rgba(196,92,122,0.4); color: var(--lotus); }
+.pairing-btn.accept { background: rgba(29,191,154,0.2); border: 1px solid rgba(29,191,154,0.4); color: var(--teal); }
+/* Flow arrows between screens */
+.flow-row {
+  display: flex; gap: 12px; align-items: flex-start;
+  justify-content: center; flex-wrap: wrap; margin-bottom: 32px;
+}
+.flow-arrow {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 4px; padding-top: 80px;
+  color: var(--saffron); font-size: 18px;
+}
+.flow-arrow-label { font-size: 8px; color: var(--stone); font-family: 'JetBrains Mono', monospace; white-space: nowrap; }
+/* Legend */
+.ui-legend {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  padding: 16px; background: var(--surface); border: 1px solid var(--border2); border-radius: 10px;
+}
+.ui-legend-item { display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--stone2); }
+.ui-legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── Footer ── */
+.blueprint-footer {
+  padding: 16px 40px;
+  border-top: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-text { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--stone); }
+.footer-ver { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--saffron); }
+</style>
+
+<div class="root">
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="logo-mark">
+      <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="15" cy="15" r="3" fill="#e8941a"/>
+        <circle cx="7"  cy="8"  r="2.2" fill="#f5b843" opacity="0.8"/>
+        <circle cx="23" cy="8"  r="2.2" fill="#f5b843" opacity="0.8"/>
+        <circle cx="7"  cy="22" r="2.2" fill="#f5b843" opacity="0.8"/>
+        <circle cx="23" cy="22" r="2.2" fill="#f5b843" opacity="0.8"/>
+        <line x1="15" y1="12" x2="9"  y2="9.5"  stroke="#e8941a" stroke-width="1" opacity="0.6"/>
+        <line x1="15" y1="12" x2="21" y2="9.5"  stroke="#e8941a" stroke-width="1" opacity="0.6"/>
+        <line x1="15" y1="18" x2="9"  y2="20.5" stroke="#e8941a" stroke-width="1" opacity="0.6"/>
+        <line x1="15" y1="18" x2="21" y2="20.5" stroke="#e8941a" stroke-width="1" opacity="0.6"/>
+        <circle cx="15" cy="15" r="7" stroke="rgba(232,148,26,0.25)" stroke-width="1" stroke-dasharray="2 3"/>
+      </svg>
+    </div>
+    <div class="hero-text">
+      <div class="app-name">Samu<span>hita</span></div>
+      <div class="app-sub">Bersatu · P2P Offline Messenger</div>
+    </div>
+    <div class="hero-meta">
+      <span class="badge badge-kotlin">Kotlin · Android</span>
+      <span class="badge badge-p2p">Nearby Connections API</span>
+      <span class="badge badge-offline">100% Offline</span>
+    </div>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="switchTab('structure')">📁 Project Structure</button>
+  <button class="tab-btn" onclick="switchTab('architecture')">🏛 Architecture</button>
+  <button class="tab-btn" onclick="switchTab('modules')">🧩 Modules</button>
+  <button class="tab-btn" onclick="switchTab('stack')">⚙ Tech Stack</button>
+  <button class="tab-btn" onclick="switchTab('database')">🗄 Database</button>
+  <button class="tab-btn" onclick="switchTab('lifecycle')">🔄 Lifecycle</button>
+  <button class="tab-btn" onclick="switchTab('roadmap')">🗓 Roadmap</button>
+  <button class="tab-btn" onclick="switchTab('permissions')">🔑 Permissions</button>
+  <button class="tab-btn" onclick="switchTab('views')">📱 UI Views</button>
+  <button class="tab-btn" onclick="switchTab('appflow')">🗺 App Flow</button>
+</div>
+
+<!-- Tab: Structure -->
+<div class="tab-panel active" id="tab-structure">
+  <div class="sec-title">Struktur Direktori Proyek</div>
+  <div class="tree" id="file-tree"></div>
+</div>
+
+<!-- Tab: Architecture -->
+<div class="tab-panel" id="tab-architecture">
+  <div class="sec-title">Clean Architecture · MVVM</div>
+  <div class="arch-grid">
+    <div class="arch-layer presentation">
+      <div class="layer-title">Presentation Layer</div>
+      <div class="component-list">
+        <div class="component-item presentation"><div class="dot"></div>RadarFragment<span class="component-sub">Discovery UI</span></div>
+        <div class="component-item presentation"><div class="dot"></div>ChatFragment<span class="component-sub">Conversation</span></div>
+        <div class="component-item presentation"><div class="dot"></div>MediaViewerFragment<span class="component-sub">Photo/Video</span></div>
+        <div class="component-item presentation"><div class="dot"></div>PairingDialog<span class="component-sub">HMAC Auth UI</span></div>
+        <div class="component-item presentation"><div class="dot"></div>RadarViewModel<span class="component-sub">StateFlow + Hilt</span></div>
+        <div class="component-item presentation"><div class="dot"></div>ChatViewModel<span class="component-sub">LiveData + Room</span></div>
+      </div>
+    </div>
+    <div class="arch-layer domain">
+      <div class="layer-title">Domain Layer</div>
+      <div class="component-list">
+        <div class="component-item domain"><div class="dot"></div>SendMessageUseCase<span class="component-sub">Core Logic</span></div>
+        <div class="component-item domain"><div class="dot"></div>PairDeviceUseCase<span class="component-sub">Auth Flow</span></div>
+        <div class="component-item domain"><div class="dot"></div>TransferMediaUseCase<span class="component-sub">File Transfer</span></div>
+        <div class="component-item domain"><div class="dot"></div>RouteMessageUseCase<span class="component-sub">Mesh Relay</span></div>
+        <div class="component-item domain"><div class="dot"></div>MessageRepository<span class="component-sub">Interface</span></div>
+        <div class="component-item domain"><div class="dot"></div>PeerRepository<span class="component-sub">Interface</span></div>
+      </div>
+    </div>
+    <div class="arch-layer data">
+      <div class="layer-title">Data Layer</div>
+      <div class="component-list">
+        <div class="component-item data"><div class="dot"></div>AppDatabase<span class="component-sub">Room + SQLite</span></div>
+        <div class="component-item data"><div class="dot"></div>MessageDao<span class="component-sub">CRUD + Query</span></div>
+        <div class="component-item data"><div class="dot"></div>UserDao<span class="component-sub">Peer Registry</span></div>
+        <div class="component-item data"><div class="dot"></div>MediaDao<span class="component-sub">Transfer State</span></div>
+        <div class="component-item data"><div class="dot"></div>MessageRepositoryImpl<span class="component-sub">Impl</span></div>
+        <div class="component-item data"><div class="dot"></div>PreferencesDataStore<span class="component-sub">Settings</span></div>
+      </div>
+    </div>
+    <div class="arch-layer network">
+      <div class="layer-title">Network / Nearby Layer</div>
+      <div class="component-list">
+        <div class="component-item network"><div class="dot"></div>NearbyConnectionManager<span class="component-sub">Core P2P</span></div>
+        <div class="component-item network"><div class="dot"></div>AdaptiveScanScheduler<span class="component-sub">Battery Mgmt</span></div>
+        <div class="component-item network"><div class="dot"></div>FileTransferManager<span class="component-sub">Payload</span></div>
+        <div class="component-item network"><div class="dot"></div>MeshRoutingTable<span class="component-sub">Hop Map</span></div>
+        <div class="component-item network"><div class="dot"></div>CryptoManager<span class="component-sub">AES-256-GCM</span></div>
+        <div class="component-item network"><div class="dot"></div>NearbyService<span class="component-sub">Foreground Svc</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tab: Modules -->
+<div class="tab-panel" id="tab-modules">
+  <div class="sec-title">Feature Modules</div>
+  <div class="modules-row">
+    <div class="module-card">
+      <div class="module-icon">📡</div>
+      <div class="module-name">Radar</div>
+      <div class="module-desc">Discovery & tampilan peer terdekat. Animasi pulse menunjukkan jangkauan sinyal.</div>
+      <div class="module-files">
+        <span class="mf-tag">RadarFragment.kt</span>
+        <span class="mf-tag">RadarViewModel.kt</span>
+        <span class="mf-tag">PeerAdapter.kt</span>
+      </div>
+    </div>
+    <div class="module-card">
+      <div class="module-icon">🔐</div>
+      <div class="module-name">Pairing</div>
+      <div class="module-desc">Challenge-Response via HMAC-SHA256. Konfirmasi koneksi dengan kode PIN visual.</div>
+      <div class="module-files">
+        <span class="mf-tag">PairingDialog.kt</span>
+        <span class="mf-tag">CryptoManager.kt</span>
+        <span class="mf-tag">KeyStore.kt</span>
+      </div>
+    </div>
+    <div class="module-card">
+      <div class="module-icon">💬</div>
+      <div class="module-name">Chat</div>
+      <div class="module-desc">Pesan teks real-time via Bluetooth. Status SENT → DELIVERED → READ.</div>
+      <div class="module-files">
+        <span class="mf-tag">ChatFragment.kt</span>
+        <span class="mf-tag">MessageAdapter.kt</span>
+        <span class="mf-tag">ChatViewModel.kt</span>
+      </div>
+    </div>
+    <div class="module-card">
+      <div class="module-icon">🖼</div>
+      <div class="module-name">Media</div>
+      <div class="module-desc">Transfer foto/video via Wi-Fi Direct. Progress bar, retry SHA-256, thumbnail cache.</div>
+      <div class="module-files">
+        <span class="mf-tag">FileTransferMgr.kt</span>
+        <span class="mf-tag">MediaViewerFrag.kt</span>
+        <span class="mf-tag">ThumbnailCache.kt</span>
+      </div>
+    </div>
+    <div class="module-card">
+      <div class="module-icon">🕸</div>
+      <div class="module-name">Mesh</div>
+      <div class="module-desc">Relay pesan antar node. TTL 3 hop, deduplication via messageId, anti-broadcast storm.</div>
+      <div class="module-files">
+        <span class="mf-tag">MeshRoutingTable.kt</span>
+        <span class="mf-tag">MessageEnvelope.kt</span>
+        <span class="mf-tag">RouteUseCase.kt</span>
+      </div>
+    </div>
+    <div class="module-card">
+      <div class="module-icon">🔋</div>
+      <div class="module-name">Power</div>
+      <div class="module-desc">Duty-cycle scanning adaptif. Doze-aware, WorkManager background sync.</div>
+      <div class="module-files">
+        <span class="mf-tag">ScanScheduler.kt</span>
+        <span class="mf-tag">NearbyService.kt</span>
+        <span class="mf-tag">PowerReceiver.kt</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tab: Tech Stack -->
+<div class="tab-panel" id="tab-stack">
+  <div class="sec-title">Tech Stack & Dependencies</div>
+  <div class="stack-grid">
+    <div class="stack-card">
+      <div class="stack-cat">Core</div>
+      <div class="stack-item"><span class="stack-name">Kotlin</span><span class="stack-ver">2.0</span></div>
+      <div class="stack-item"><span class="stack-name">Android SDK</span><span class="stack-ver">min 26 · target 35</span></div>
+      <div class="stack-item"><span class="stack-name">Coroutines + Flow</span><span class="stack-ver">1.8</span></div>
+      <div class="stack-item"><span class="stack-name">Hilt (DI)</span><span class="stack-ver">2.51</span></div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-cat">Networking P2P</div>
+      <div class="stack-item"><span class="stack-name">Nearby Connections</span><span class="stack-ver">19.3.0</span></div>
+      <div class="stack-item"><span class="stack-name">Strategy.P2P_CLUSTER</span><span class="stack-ver">Mesh mode</span></div>
+      <div class="stack-item"><span class="stack-name">Payload.Type.FILE</span><span class="stack-ver">Wi-Fi Direct</span></div>
+      <div class="stack-item"><span class="stack-name">Payload.Type.BYTES</span><span class="stack-ver">Bluetooth</span></div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-cat">Storage</div>
+      <div class="stack-item"><span class="stack-name">Room</span><span class="stack-ver">2.6</span></div>
+      <div class="stack-item"><span class="stack-name">DataStore</span><span class="stack-ver">Preferences</span></div>
+      <div class="stack-item"><span class="stack-name">Coil</span><span class="stack-ver">2.6 · thumbnail</span></div>
+      <div class="stack-item"><span class="stack-name">WorkManager</span><span class="stack-ver">2.9</span></div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-cat">Security</div>
+      <div class="stack-item"><span class="stack-name">AES-256-GCM</span><span class="stack-ver">E2E Encrypt</span></div>
+      <div class="stack-item"><span class="stack-name">HMAC-SHA256</span><span class="stack-ver">Pairing Auth</span></div>
+      <div class="stack-item"><span class="stack-name">Android Keystore</span><span class="stack-ver">Key storage</span></div>
+      <div class="stack-item"><span class="stack-name">SHA-256</span><span class="stack-ver">File integrity</span></div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-cat">UI</div>
+      <div class="stack-item"><span class="stack-name">Jetpack Navigation</span><span class="stack-ver">2.7</span></div>
+      <div class="stack-item"><span class="stack-name">ViewBinding</span><span class="stack-ver">enabled</span></div>
+      <div class="stack-item"><span class="stack-name">Material 3</span><span class="stack-ver">1.11</span></div>
+      <div class="stack-item"><span class="stack-name">RecyclerView</span><span class="stack-ver">+ DiffUtil</span></div>
+    </div>
+    <div class="stack-card">
+      <div class="stack-cat">Dev Tools</div>
+      <div class="stack-item"><span class="stack-name">VS Code</span><span class="stack-ver">+ Android ext</span></div>
+      <div class="stack-item"><span class="stack-name">Kotlin extension</span><span class="stack-ver">Gradle tasks</span></div>
+      <div class="stack-item"><span class="stack-name">ADB + adb-commands</span><span class="stack-ver">Deploy/Debug</span></div>
+      <div class="stack-item"><span class="stack-name">JUnit + Espresso</span><span class="stack-ver">Testing</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Tab: Database Schema -->
+<div class="tab-panel" id="tab-database">
+  <div class="sec-title">Room Database Schema — 3 Entities</div>
+
+  <div class="schema-rel">
+    <div class="rel-item"><span style="color:var(--teal)">users</span> <span class="rel-arrow">──</span> <span style="color:var(--stone)">1 : N</span> <span class="rel-arrow">──▶</span> <span style="color:var(--saffron2)">messages</span></div>
+    <div class="rel-item" style="color:var(--border);">│</div>
+    <div class="rel-item"><span style="color:var(--indigo-soft)">media_items</span> <span class="rel-arrow">◀──</span> <span style="color:var(--stone)">FK (nullable)</span> <span class="rel-arrow">──</span> <span style="color:var(--saffron2)">messages</span></div>
+    <div class="rel-item" style="color:var(--border);">│</div>
+    <div class="rel-item"><span style="color:var(--stone)">CASCADE on delete</span> &nbsp;·&nbsp; <span style="color:var(--stone)">SET_NULL for media FK</span></div>
+  </div>
+
+  <div class="schema-grid">
+    <div class="schema-card">
+      <div class="schema-head">
+        <span style="font-size:16px">👤</span>
+        <span class="schema-table-name">users</span>
+        <span class="schema-entity">User.kt</span>
+      </div>
+      <div class="schema-fields">
+        <div class="schema-field"><span class="field-pk">PK</span><span class="field-name">deviceId</span><span class="field-type">String</span></div>
+        <div class="schema-field"><span style="width:28px"></span><span class="field-name">displayName</span><span class="field-type">String</span></div>
+        <div class="schema-field"><span style="width:28px"></span><span class="field-name">publicKeyBase64</span><span class="field-type">String</span><span class="field-note">HMAC auth</span></div>
+        <div class="schema-field"><span style="width:28px"></span><span class="field-name">avatarHash</span><span class="field-type">String?</span><span class="field-note">CRC32</span></div>
+        <div class="schema-field"><span style="width:28px"></span><span class="field-name">lastSeen</span><span class="field-type">Long</span><span class="field-note">epoch ms</span></div>
+        <div class="schema-field"><span style="width:28px"></span><span class="field-name">trustLevel</span><span class="field-type">Int</span><span class="field-note">0/1/2</span></div>
+        <div class="schema-field"><span style="width:28px"></span><span class="field-name">isSelf</span><span class="field-type">Boolean</span></div>
+      </div>
+    </div>
+    <div class="schema-card">
+      <div class="schema-head">
+        <span style="font-size:16px">💬</span>
+        <span class="schema-table-name">messages</span>
+        <span class="schema-entity">Message.kt</span>
+      </div>
+      <div class="schema-fields">
+        <div class="schema-field"><span class="field-pk">PK</span><span class="field-name">messageId</span><span class="field-type">String</span><span class="field-note">UUID v4</span></div>
+        <div class="schema-field"><span class="field-idx">IDX</span><span class="field-name">conversationKey</span><span class="field-type">String</span><span class="field-note">sorted concat</span></div>
+        <div class="schema-field"><span class="field-fk">FK</span><span class="field-name">senderId</span><span class="field-type">String</span><span class="field-note">→ users</span></div>
+        <div class="schema-field"><span class="field-idx">IDX</span><span class="field-name">recipientId</span><span class="field-type">String</span></div>
+        <div class="schema-field"><span style="width:28px"></span><span class="field-name">body</span><span class="field-type">String?</span></div>
+        <div class="schema-field"><span class="field-fk">FK</span><span class="field-name">attachedMediaId</span><span class="field-type">String?</span><span class="field-note">→ media</span></div>
+        <div class="schema-field"><span class="field-idx">IDX</span><span class="field-name">timestamp</span><span class="field-type">Long</span></div>
+        <div class="schema-field"><span style="width:28px"></span><span class="field-name">status</span><span class="field-type">MessageStatus</span></div>
+        <div class="schema-field"><span style="width:28px"></span><span class="field-name">isEncrypted</span><span class="field-type">Boolean</span></div>
+        <div class="schema-field"><span style="width:28px"></span><span class="field-name">retryCount</span><span class="field-type">Int</span></div>
+      </div>
+    </div>
+    <div class="schema-card">
+      <div class="schema-head">
+        <span style="font-size:16px">🖼</span>
+        <span class="schema-table-name">media_items</span>
+        <span class="schema-entity">MediaItem.kt</span>
+      </div>
+      <div class="schema-fields">
+        <div class="schema-field"><span class="field-pk">PK</span><span class="field-name">mediaId</span><span class="field-type">String</span></div>
+        <div class="schema-field"><span style="width:28px"></span><span class="field-name">fileName</span><span class="field-type">String</span></div>
+        <div class="schema-field"><span style="width:28px"></span><span class="field-name">mimeType</span><span class="field-type">String</span></div>
+        <div class="schema-field"><span style="width:28px"></span><span class="field-name">sizeBytes</span><span class="field-type">Long</span></div>
+        <div class="schema-field"><span style="width:28px"></span><span class="field-name">localPath</span><span class="field-type">String?</span><span class="field-note">null=pending</span></div>
+        <div class="schema-field"><span style="width:28px"></span><span class="field-name">thumbnailPath</span><span class="field-type">String?</span></div>
+        <div class="schema-field"><span style="width:28px"></span><span class="field-name">checksum</span><span class="field-type">String</span><span class="field-note">SHA-256</span></div>
+        <div class="schema-field"><span style="width:28px"></span><span class="field-name">transferStatus</span><span class="field-type">TransferStatus</span></div>
+        <div class="schema-field"><span style="width:28px"></span><span class="field-name">bytesTransferred</span><span class="field-type">Long</span><span class="field-note">resume</span></div>
+        <div class="schema-field"><span style="width:28px"></span><span class="field-name">payloadId</span><span class="field-type">Long?</span><span class="field-note">Nearby</span></div>
+        <div class="schema-field"><span style="width:28px"></span><span class="field-name">createdAt</span><span class="field-type">Long</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-title">Enum Types</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">KOTLIN</span><span>MessageStatus.kt</span></div>
+      <div class="code-body"><span class="c-kw">enum class</span> <span class="c-ty">MessageStatus</span> {
+  <span class="c-nm">SENDING</span>,    <span class="c-co">// Belum terkirim ke Nearby</span>
+  <span class="c-nm">SENT</span>,       <span class="c-co">// Terkirim ke Nearby API</span>
+  <span class="c-nm">DELIVERED</span>, <span class="c-co">// Peer menerima payload</span>
+  <span class="c-nm">READ</span>,       <span class="c-co">// Peer membuka chat</span>
+  <span class="c-nm">FAILED</span>     <span class="c-co">// Gagal — siap retry</span>
+}</div>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="code-lang">KOTLIN</span><span>TransferStatus.kt</span></div>
+      <div class="code-body"><span class="c-kw">enum class</span> <span class="c-ty">TransferStatus</span> {
+  <span class="c-nm">PENDING</span>,     <span class="c-co">// Menunggu koneksi</span>
+  <span class="c-nm">IN_PROGRESS</span>,<span class="c-co">// Transfer berjalan</span>
+  <span class="c-nm">COMPLETED</span>,  <span class="c-co">// SHA-256 verified ✓</span>
+  <span class="c-nm">FAILED</span>,      <span class="c-co">// Checksum mismatch</span>
+  <span class="c-nm">CANCELLED</span>  <span class="c-co">// User/network cancel</span>
+}</div>
+    </div>
+  </div>
+
+  <div class="sec-title" style="margin-top:20px">MessageEnvelope — Mesh Routing Wrapper</div>
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">KOTLIN</span><span>MessageEnvelope.kt — TTL + Hop Count untuk Mesh</span></div>
+    <div class="code-body"><span class="c-an">@Serializable</span>
+<span class="c-kw">data class</span> <span class="c-ty">MessageEnvelope</span>(
+  <span class="c-kw">val</span> <span class="c-pr">messageId</span>   : <span class="c-ty">String</span>,   <span class="c-co">// UUID — deduplikasi di setiap node</span>
+  <span class="c-kw">val</span> <span class="c-pr">sourceId</span>    : <span class="c-ty">String</span>,   <span class="c-co">// deviceId pengirim asal</span>
+  <span class="c-kw">val</span> <span class="c-pr">destinationId</span>: <span class="c-ty">String</span>,   <span class="c-co">// deviceId penerima akhir</span>
+  <span class="c-kw">val</span> <span class="c-pr">payload</span>     : <span class="c-ty">ByteArray</span>, <span class="c-co">// AES-256-GCM ciphertext</span>
+  <span class="c-kw">val</span> <span class="c-pr">hopCount</span>    : <span class="c-ty">Int</span> = <span class="c-nm">0</span>,  <span class="c-co">// jumlah lompatan saat ini</span>
+  <span class="c-kw">val</span> <span class="c-pr">ttl</span>         : <span class="c-ty">Int</span> = <span class="c-nm">3</span>,  <span class="c-co">// max 3 hop — buang jika 0</span>
+  <span class="c-kw">val</span> <span class="c-pr">timestamp</span>   : <span class="c-ty">Long</span>         <span class="c-co">// epoch ms — untuk ordering</span>
+)</div>
+  </div>
+</div>
+
+<!-- Tab: Connection Lifecycle -->
+<div class="tab-panel" id="tab-lifecycle">
+  <div class="sec-title">Connection Lifecycle — Discovery → Pairing → Session</div>
+
+  <div class="lifecycle-flow">
+    <div class="lc-step">
+      <div class="lc-num">1</div>
+      <div class="lc-name">Discovery</div>
+      <div class="lc-cb"><span>startDiscovery()</span>STRATEGY<br>P2P_CLUSTER</div>
+    </div>
+    <div class="lc-step">
+      <div class="lc-num">2</div>
+      <div class="lc-name">Found</div>
+      <div class="lc-cb"><span>onEndpointFound()</span>Tampil di Radar<br>DB: trustLevel=0</div>
+    </div>
+    <div class="lc-step">
+      <div class="lc-num">3</div>
+      <div class="lc-name">Request</div>
+      <div class="lc-cb"><span>requestConnection()</span>Kirim nonce<br>32-byte random</div>
+    </div>
+    <div class="lc-step">
+      <div class="lc-num">4</div>
+      <div class="lc-name">Challenge</div>
+      <div class="lc-cb"><span>onConnectionInitiated()</span>HMAC-SHA256<br>verifikasi PIN</div>
+    </div>
+    <div class="lc-step">
+      <div class="lc-num">5</div>
+      <div class="lc-name">Paired</div>
+      <div class="lc-cb"><span>onConnectionResult()</span>acceptConnection()<br>trustLevel=1</div>
+    </div>
+    <div class="lc-step">
+      <div class="lc-num">6</div>
+      <div class="lc-name">Session</div>
+      <div class="lc-cb"><span>sendPayload()</span>BYTES=BT<br>FILE=WiFi Direct</div>
+    </div>
+    <div class="lc-step">
+      <div class="lc-num">7</div>
+      <div class="lc-name">Disconnect</div>
+      <div class="lc-cb"><span>onDisconnected()</span>markOffline()<br>backoff retry</div>
+    </div>
+  </div>
+
+  <div class="lifecycle-detail">
+    <div class="lc-card">
+      <div class="lc-card-title">Fase 1–2 · Discovery</div>
+      <div class="lc-note">
+        Gunakan <strong>Strategy.P2P_CLUSTER</strong> agar setiap perangkat bisa bertindak sebagai advertiser dan discoverer secara bersamaan. Ini yang memungkinkan mesh routing.
+        <br><br>
+        <strong>onEndpointLost()</strong> dipanggil saat peer keluar dari jangkauan — langsung update DB ke status offline dan hapus dari daftar radar.
+      </div>
+    </div>
+    <div class="lc-card">
+      <div class="lc-card-title">Fase 3–5 · Pairing (Challenge-Response)</div>
+      <div class="lc-note">
+        Saat <strong>onConnectionInitiated()</strong> dipanggil, kirim <em>nonce</em> 32 byte random ke peer. Peer harus membalas dengan <strong>HMAC-SHA256(nonce, sharedKey)</strong>. Jika verifikasi berhasil, panggil <strong>acceptConnection()</strong>.
+        <br><br>
+        Tampilkan kode PIN 6 digit visual agar user bisa konfirmasi secara out-of-band bahwa koneksi yang benar.
+      </div>
+    </div>
+    <div class="lc-card">
+      <div class="lc-card-title">Fase 6 · Session — Transport Otomatis</div>
+      <div class="lc-note">
+        Jangan paksa transport secara manual. Nearby API otomatis memilih:
+        <br>• <strong>Payload.Type.BYTES</strong> → Bluetooth (teks, &lt; 32 KB)
+        <br>• <strong>Payload.Type.FILE</strong> → Wi-Fi Direct (foto/video)
+        <br><br>
+        Pastikan semua permission runtime sudah granted sebelum memanggil <strong>startDiscovery()</strong>.
+      </div>
+    </div>
+    <div class="lc-card">
+      <div class="lc-card-title">Fase 7 · Disconnect & Reconnect</div>
+      <div class="lc-note">
+        Implementasikan <strong>exponential backoff</strong> untuk reconnect: 5s → 10s → 20s → 40s → max 5 menit. Gunakan <strong>WorkManager</strong> dengan constraint <code>requiresNetworkType(NOT_REQUIRED)</code> untuk background reconnect tanpa menguras baterai.
+        <br><br>
+        Pesan yang gagal terkirim saat disconnect disimpan dengan status <strong>FAILED</strong> dan diretry otomatis saat koneksi kembali.
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-title" style="margin-top:24px">Adaptive Scan Scheduler — Battery Management</div>
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">KOTLIN</span><span>AdaptiveScanScheduler.kt — Duty Cycle</span></div>
+    <div class="code-body"><span class="c-kw">enum class</span> <span class="c-ty">ScanMode</span>(<span class="c-kw">val</span> <span class="c-pr">intervalMs</span>: <span class="c-ty">Long</span>, <span class="c-kw">val</span> <span class="c-pr">durationMs</span>: <span class="c-ty">Long</span>) {
+  <span class="c-nm">FOREGROUND</span>      (<span class="c-nm">0L</span>,       <span class="c-ty">Long</span>.<span class="c-nm">MAX_VALUE</span>), <span class="c-co">// aktif terus</span>
+  <span class="c-nm">BACKGROUND_ACTIVE</span>(<span class="c-nm">60_000</span>,  <span class="c-nm">10_000</span>),        <span class="c-co">// 10s per 1 menit</span>
+  <span class="c-nm">BACKGROUND_IDLE</span>  (<span class="c-nm">300_000</span>, <span class="c-nm">5_000</span>),         <span class="c-co">// 5s per 5 menit</span>
+  <span class="c-nm">DOZE_MODE</span>        (<span class="c-nm">0</span>,       <span class="c-nm">0</span>)              <span class="c-co">// stop total</span>
+}
+
+<span class="c-kw">fun</span> <span class="c-nm">onAppBackground</span>() = applyScanMode(<span class="c-ty">ScanMode</span>.<span class="c-nm">BACKGROUND_ACTIVE</span>)
+<span class="c-kw">fun</span> <span class="c-nm">onScreenOff</span>()     = applyScanMode(<span class="c-ty">ScanMode</span>.<span class="c-nm">BACKGROUND_IDLE</span>)
+<span class="c-kw">fun</span> <span class="c-nm">onDozeEnter</span>()     = applyScanMode(<span class="c-ty">ScanMode</span>.<span class="c-nm">DOZE_MODE</span>)
+<span class="c-kw">fun</span> <span class="c-nm">onForeground</span>()    = applyScanMode(<span class="c-ty">ScanMode</span>.<span class="c-nm">FOREGROUND</span>)</div>
+  </div>
+</div>
+
+<!-- Tab: Roadmap -->
+<div class="tab-panel" id="tab-roadmap">
+  <div class="sec-title">Development Roadmap — 30 Hari</div>
+  <div class="roadmap">
+
+    <div class="phase-card phase-card-done">
+      <div class="phase-sidebar">
+        <div class="phase-num">0</div>
+        <div class="phase-days">Hari 1–2</div>
+        <div class="phase-status status-done">Done ✓</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-title">Setup Fondasi</div>
+        <div class="phase-tasks">
+          <div class="phase-task"><span class="task-check">✓</span>Project Kotlin + Gradle (Kotlin DSL) di VS Code</div>
+          <div class="phase-task"><span class="task-check">✓</span><code>AndroidManifest.xml</code> — semua permission Nearby</div>
+          <div class="phase-task"><span class="task-check">✓</span><code>.vscode/tasks.json</code> — 12 task (build, install, logcat, test)</div>
+          <div class="phase-task"><span class="task-check">✓</span><code>AppDatabase.kt</code> — 3 entity Room + Hilt modules</div>
+          <div class="phase-task"><span class="task-check">✓</span>Domain layer, Repository interfaces &amp; implementations</div>
+          <div class="phase-task"><span class="task-check">✓</span>JDK 21 (Temurin) + Gradle 8.13 dikonfigurasi</div>
+        </div>
+        <div class="phase-tags"><span class="phase-tag">build.gradle.kts</span><span class="phase-tag">AndroidManifest</span><span class="phase-tag">AppDatabase</span><span class="phase-tag">SamuhitaApp</span><span class="phase-tag">Hilt DI</span><span class="phase-tag">Clean Arch</span></div>
+      </div>
+    </div>
+
+    <div class="phase-card phase-card-done">
+      <div class="phase-sidebar">
+        <div class="phase-num">1</div>
+        <div class="phase-days">Hari 3–5</div>
+        <div class="phase-status status-done">Done ✓</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-title">Discovery &amp; Radar UI</div>
+        <div class="phase-tasks">
+          <div class="phase-task"><span class="task-check">✓</span><code>NearbyConnectionManager.kt</code> — P2P_CLUSTER, advertising, discovery, connection lifecycle</div>
+          <div class="phase-task"><span class="task-check">✓</span><code>NearbyService.kt</code> — Foreground service, FOREGROUND_SERVICE_CONNECTED_DEVICE</div>
+          <div class="phase-task"><span class="task-check">✓</span><code>AdaptiveScanScheduler.kt</code> — 4 mode (FOREGROUND / BACKGROUND / IDLE / DOZE) duty cycle</div>
+          <div class="phase-task"><span class="task-check">✓</span>RadarFragment + RecyclerView — permission flow (API 26/31/33), 5 UI states</div>
+          <div class="phase-task"><span class="task-check">✓</span><code>PairingDialog.kt</code> — dialog kode verifikasi authenticationDigits Nearby API</div>
+          <div class="phase-task"><span class="task-check">✓</span><code>PairDeviceUseCase.kt</code> — simpan peer, trustLevel=1, placeholder Phase 2 HMAC</div>
+        </div>
+        <div class="phase-tags"><span class="phase-tag">NearbyConnectionManager</span><span class="phase-tag">NearbyService</span><span class="phase-tag">AdaptiveScanScheduler</span><span class="phase-tag">RadarFragment</span><span class="phase-tag">PairingDialog</span></div>
+      </div>
+    </div>
+
+    <div class="phase-card phase-card-done">
+      <div class="phase-sidebar">
+        <div class="phase-num">2</div>
+        <div class="phase-days">Hari 6–9</div>
+        <div class="phase-status status-done">Done ✓</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-title">Pairing &amp; Autentikasi</div>
+        <div class="phase-tasks">
+          <div class="phase-task"><span class="task-check">✓</span><code>CryptoManager.kt</code> — Android Keystore + AES-256-GCM + HMAC-SHA256</div>
+          <div class="phase-task"><span class="task-check">✓</span><code>ControlMessage.kt</code> — serializable HMAC_CHALLENGE / HMAC_RESPONSE / VERIFIED / FAILED</div>
+          <div class="phase-task"><span class="task-check">✓</span><code>PairingDialog.kt</code> — button Accept/Reject di-wire, replace AlertDialog workaround</div>
+          <div class="phase-task"><span class="task-check">✓</span>HMAC challenge-response di <code>NearbyConnectionManager</code> setelah STATUS_OK</div>
+          <div class="phase-task"><span class="task-check">✓</span><code>PairDeviceUseCase</code> — pure domain, simpan keyAlias ke Room</div>
+          <div class="phase-task"><span class="task-check">✓</span><code>RadarViewModel</code> — <code>RadarUiEffect</code> flow, Snackbar success/failed</div>
+        </div>
+        <div class="phase-tags"><span class="phase-tag">CryptoManager</span><span class="phase-tag">ControlMessage</span><span class="phase-tag">PairingDialog</span><span class="phase-tag">HMAC-SHA256</span><span class="phase-tag">AES-256-GCM</span><span class="phase-tag">Keystore</span></div>
+      </div>
+    </div>
+
+    <div class="phase-card phase-card-done">
+      <div class="phase-sidebar">
+        <div class="phase-num">3</div>
+        <div class="phase-days">Hari 10–14</div>
+        <div class="phase-status status-done">Done ✓</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-title">Chat Teks Real-time</div>
+        <div class="phase-tasks">
+          <div class="phase-task"><span class="task-check">✓</span>MessageRepository + DAO + Room query per conversationKey</div>
+          <div class="phase-task"><span class="task-check">✓</span>ChatViewModel — StateFlow + SendMessageUseCase</div>
+          <div class="phase-task"><span class="task-check">✓</span>Kirim/terima <code>Payload.fromBytes()</code> — enkripsi AES-256-GCM</div>
+          <div class="phase-task"><span class="task-check">✓</span>Status delivery SENT → DELIVERED → READ dengan receipt ACK</div>
+          <div class="phase-task"><span class="task-check">✓</span>UI chat bubble — RecyclerView + DiffUtil</div>
+        </div>
+        <div class="phase-tags"><span class="phase-tag">ChatFragment</span><span class="phase-tag">ChatViewModel</span><span class="phase-tag">MessageAdapter</span><span class="phase-tag">MessageDao</span></div>
+      </div>
+    </div>
+
+    <div class="phase-card phase-card-active">
+      <div class="phase-sidebar">
+        <div class="phase-num">4</div>
+        <div class="phase-days">Hari 15–20</div>
+        <div class="phase-status status-active">Active</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-title">Transfer Media (Foto/Video)</div>
+        <div class="phase-tasks">
+          <div class="phase-task"><div class="task-dot"></div>FileTransferManager — <code>Payload.fromFile()</code> via Wi-Fi Direct otomatis</div>
+          <div class="phase-task"><div class="task-dot"></div>Progress tracking throttled (1x/detik) — update MediaDao</div>
+          <div class="phase-task"><div class="task-dot"></div>Verifikasi SHA-256 post-transfer — retry jika checksum mismatch</div>
+          <div class="phase-task"><div class="task-dot"></div>Thumbnail generation dengan Coil — ThumbnailCache.kt</div>
+          <div class="phase-task"><div class="task-dot"></div>MediaViewerFragment untuk preview full-screen</div>
+        </div>
+        <div class="phase-tags"><span class="phase-tag">FileTransferManager</span><span class="phase-tag">MediaViewerFragment</span><span class="phase-tag">ThumbnailCache</span></div>
+      </div>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-sidebar">
+        <div class="phase-num">5</div>
+        <div class="phase-days">Hari 21–25</div>
+        <div class="phase-status status-todo">Todo</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-title">Mesh Networking</div>
+        <div class="phase-tasks">
+          <div class="phase-task"><div class="task-dot"></div>MeshRoutingTable.kt — mapping endpointId ke next hop</div>
+          <div class="phase-task"><div class="task-dot"></div>MessageEnvelope dengan TTL (max 3 hop) — buang jika TTL = 0</div>
+          <div class="phase-task"><div class="task-dot"></div>RouteMessageUseCase — forward otomatis jika bukan destinasi</div>
+          <div class="phase-task"><div class="task-dot"></div>Deduplikasi via messageId Set — cegah broadcast storm</div>
+          <div class="phase-task"><div class="task-dot"></div>Test lapangan multi-perangkat (sweet spot: 5–10 node)</div>
+        </div>
+        <div class="phase-tags"><span class="phase-tag">MeshRoutingTable</span><span class="phase-tag">MessageEnvelope</span><span class="phase-tag">RouteMessageUseCase</span></div>
+      </div>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-sidebar">
+        <div class="phase-num">6</div>
+        <div class="phase-days">Hari 26–30</div>
+        <div class="phase-status status-todo">Todo</div>
+      </div>
+      <div class="phase-body">
+        <div class="phase-title">Polish, Baterai &amp; Testing</div>
+        <div class="phase-tasks">
+          <div class="phase-task"><div class="task-dot"></div>AdaptiveScanScheduler — duty cycle Foreground/Background/Doze</div>
+          <div class="phase-task"><div class="task-dot"></div>WorkManager background sync dengan requiresBatteryNotLow()</div>
+          <div class="phase-task"><div class="task-dot"></div>End-to-end enkripsi AES-256-GCM untuk semua payload</div>
+          <div class="phase-task"><div class="task-dot"></div>Foreground Service notification untuk NearbyService</div>
+          <div class="phase-task"><div class="task-dot"></div>Unit test (JUnit) + Instrumented test (Espresso)</div>
+          <div class="phase-task"><div class="task-dot"></div>Profiling baterai &amp; memory dengan Android Studio Profiler via ADB</div>
+        </div>
+        <div class="phase-tags"><span class="phase-tag">NearbyService</span><span class="phase-tag">ScanScheduler</span><span class="phase-tag">CryptoManager</span><span class="phase-tag">WorkManager</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Tab: Permissions -->
+<div class="tab-panel" id="tab-permissions">
+  <div class="sec-title">AndroidManifest.xml — Permission Map</div>
+
+  <div class="perm-grid">
+    <div class="perm-card">
+      <div class="perm-head">
+        <span class="perm-head-icon">📡</span>
+        <span class="perm-head-title">Bluetooth Legacy</span>
+        <span class="perm-head-api">maxSdkVersion=30</span>
+      </div>
+      <div class="perm-list">
+        <div class="perm-item"><span class="perm-name">BLUETOOTH</span><span class="perm-sdk">API &lt;= 30</span></div>
+        <div class="perm-item"><span class="perm-name">BLUETOOTH_ADMIN</span><span class="perm-sdk">API &lt;= 30</span></div>
+      </div>
+    </div>
+    <div class="perm-card">
+      <div class="perm-head">
+        <span class="perm-head-icon">🔵</span>
+        <span class="perm-head-title">Bluetooth Modern</span>
+        <span class="perm-head-api">API 31+</span>
+      </div>
+      <div class="perm-list">
+        <div class="perm-item"><span class="perm-name">BLUETOOTH_SCAN</span><span class="perm-sdk">neverForLocation</span></div>
+        <div class="perm-item"><span class="perm-name">BLUETOOTH_ADVERTISE</span></div>
+        <div class="perm-item"><span class="perm-name">BLUETOOTH_CONNECT</span></div>
+      </div>
+    </div>
+    <div class="perm-card">
+      <div class="perm-head">
+        <span class="perm-head-icon">📶</span>
+        <span class="perm-head-title">Wi-Fi &amp; Network</span>
+        <span class="perm-head-api">All APIs</span>
+      </div>
+      <div class="perm-list">
+        <div class="perm-item"><span class="perm-name">NEARBY_WIFI_DEVICES</span><span class="perm-sdk">API 33+ · neverForLocation</span></div>
+        <div class="perm-item"><span class="perm-name">ACCESS_WIFI_STATE</span></div>
+        <div class="perm-item"><span class="perm-name">CHANGE_WIFI_STATE</span></div>
+        <div class="perm-item"><span class="perm-name">CHANGE_NETWORK_STATE</span></div>
+      </div>
+    </div>
+    <div class="perm-card">
+      <div class="perm-head">
+        <span class="perm-head-icon">📍</span>
+        <span class="perm-head-title">Location</span>
+        <span class="perm-head-api">Required &lt; API 33</span>
+      </div>
+      <div class="perm-list">
+        <div class="perm-item"><span class="perm-name">ACCESS_FINE_LOCATION</span><span class="perm-warn">⚠ Runtime request</span></div>
+      </div>
+    </div>
+    <div class="perm-card">
+      <div class="perm-head">
+        <span class="perm-head-icon">⚙</span>
+        <span class="perm-head-title">Foreground Service</span>
+        <span class="perm-head-api">API 28+</span>
+      </div>
+      <div class="perm-list">
+        <div class="perm-item"><span class="perm-name">FOREGROUND_SERVICE</span></div>
+        <div class="perm-item"><span class="perm-name">FOREGROUND_SERVICE_CONNECTED_DEVICE</span><span class="perm-sdk">API 34+</span></div>
+        <div class="perm-item"><span class="perm-name">POST_NOTIFICATIONS</span><span class="perm-sdk">API 33+ · Runtime</span></div>
+      </div>
+    </div>
+    <div class="perm-card">
+      <div class="perm-head">
+        <span class="perm-head-icon">🔋</span>
+        <span class="perm-head-title">Battery &amp; Storage</span>
+        <span class="perm-head-api">Optional</span>
+      </div>
+      <div class="perm-list">
+        <div class="perm-item"><span class="perm-name">REQUEST_IGNORE_BATTERY_OPT</span><span class="perm-warn">⚠ User opt-in only</span></div>
+        <div class="perm-item"><span class="perm-name">READ_MEDIA_IMAGES</span><span class="perm-sdk">API 33+</span></div>
+        <div class="perm-item"><span class="perm-name">READ_MEDIA_VIDEO</span><span class="perm-sdk">API 33+</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-title">AndroidManifest.xml — Snippet Lengkap</div>
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">XML</span><span>AndroidManifest.xml — Nearby Connections Permissions</span></div>
+    <div class="code-body"><span class="c-co">&lt;!-- ─── Bluetooth Legacy (API ≤ 30) ─────────────────────────── --&gt;</span>
+<span class="c-xml-tag">&lt;uses-permission</span> <span class="c-xml-attr">android:name</span>=<span class="c-xml-val">"android.permission.BLUETOOTH"</span>
+  <span class="c-xml-attr">android:maxSdkVersion</span>=<span class="c-xml-val">"30"</span><span class="c-xml-tag">/&gt;</span>
+<span class="c-xml-tag">&lt;uses-permission</span> <span class="c-xml-attr">android:name</span>=<span class="c-xml-val">"android.permission.BLUETOOTH_ADMIN"</span>
+  <span class="c-xml-attr">android:maxSdkVersion</span>=<span class="c-xml-val">"30"</span><span class="c-xml-tag">/&gt;</span>
+
+<span class="c-co">&lt;!-- ─── Bluetooth Modern (API 31+) ──────────────────────────── --&gt;</span>
+<span class="c-xml-tag">&lt;uses-permission</span> <span class="c-xml-attr">android:name</span>=<span class="c-xml-val">"android.permission.BLUETOOTH_SCAN"</span>
+  <span class="c-xml-attr">android:usesPermissionFlags</span>=<span class="c-xml-val">"neverForLocation"</span><span class="c-xml-tag">/&gt;</span>
+<span class="c-xml-tag">&lt;uses-permission</span> <span class="c-xml-attr">android:name</span>=<span class="c-xml-val">"android.permission.BLUETOOTH_ADVERTISE"</span><span class="c-xml-tag">/&gt;</span>
+<span class="c-xml-tag">&lt;uses-permission</span> <span class="c-xml-attr">android:name</span>=<span class="c-xml-val">"android.permission.BLUETOOTH_CONNECT"</span><span class="c-xml-tag">/&gt;</span>
+
+<span class="c-co">&lt;!-- ─── Wi-Fi (Wi-Fi Direct untuk transfer file) ─────────────── --&gt;</span>
+<span class="c-xml-tag">&lt;uses-permission</span> <span class="c-xml-attr">android:name</span>=<span class="c-xml-val">"android.permission.NEARBY_WIFI_DEVICES"</span>
+  <span class="c-xml-attr">android:usesPermissionFlags</span>=<span class="c-xml-val">"neverForLocation"</span><span class="c-xml-tag">/&gt;</span>
+<span class="c-xml-tag">&lt;uses-permission</span> <span class="c-xml-attr">android:name</span>=<span class="c-xml-val">"android.permission.ACCESS_WIFI_STATE"</span><span class="c-xml-tag">/&gt;</span>
+<span class="c-xml-tag">&lt;uses-permission</span> <span class="c-xml-attr">android:name</span>=<span class="c-xml-val">"android.permission.CHANGE_WIFI_STATE"</span><span class="c-xml-tag">/&gt;</span>
+<span class="c-xml-tag">&lt;uses-permission</span> <span class="c-xml-attr">android:name</span>=<span class="c-xml-val">"android.permission.CHANGE_NETWORK_STATE"</span><span class="c-xml-tag">/&gt;</span>
+
+<span class="c-co">&lt;!-- ─── Location (wajib untuk API &lt; 33) ─────────────────────── --&gt;</span>
+<span class="c-xml-tag">&lt;uses-permission</span> <span class="c-xml-attr">android:name</span>=<span class="c-xml-val">"android.permission.ACCESS_FINE_LOCATION"</span><span class="c-xml-tag">/&gt;</span>
+
+<span class="c-co">&lt;!-- ─── Foreground Service ───────────────────────────────────── --&gt;</span>
+<span class="c-xml-tag">&lt;uses-permission</span> <span class="c-xml-attr">android:name</span>=<span class="c-xml-val">"android.permission.FOREGROUND_SERVICE"</span><span class="c-xml-tag">/&gt;</span>
+<span class="c-xml-tag">&lt;uses-permission</span> <span class="c-xml-attr">android:name</span>=<span class="c-xml-val">"android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE"</span><span class="c-xml-tag">/&gt;</span>
+<span class="c-xml-tag">&lt;uses-permission</span> <span class="c-xml-attr">android:name</span>=<span class="c-xml-val">"android.permission.POST_NOTIFICATIONS"</span><span class="c-xml-tag">/&gt;</span></div>
+  </div>
+
+  <div class="sec-title">VS Code — Konfigurasi .vscode/tasks.json</div>
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">JSON</span><span>.vscode/tasks.json — Build &amp; Deploy Tasks</span></div>
+    <div class="code-body">{
+  <span class="c-st">"version"</span>: <span class="c-st">"2.0.0"</span>,
+  <span class="c-st">"tasks"</span>: [
+    {
+      <span class="c-st">"label"</span>:   <span class="c-st">"Build Debug"</span>,
+      <span class="c-st">"type"</span>:    <span class="c-st">"shell"</span>,
+      <span class="c-st">"command"</span>: <span class="c-st">"./gradlew assembleDebug"</span>,
+      <span class="c-st">"group"</span>:   { <span class="c-st">"kind"</span>: <span class="c-st">"build"</span>, <span class="c-st">"isDefault"</span>: <span class="c-kw">true</span> }
+    },
+    {
+      <span class="c-st">"label"</span>:   <span class="c-st">"Install &amp; Run"</span>,
+      <span class="c-st">"type"</span>:    <span class="c-st">"shell"</span>,
+      <span class="c-st">"command"</span>: <span class="c-st">"./gradlew installDebug &amp;&amp; adb shell am start -n com.samuhita/.ui.MainActivity"</span>
+    },
+    {
+      <span class="c-st">"label"</span>:   <span class="c-st">"Logcat"</span>,
+      <span class="c-st">"type"</span>:    <span class="c-st">"shell"</span>,
+      <span class="c-st">"command"</span>: <span class="c-st">"adb logcat -s Samuhita:D Nearby:D"</span>,
+      <span class="c-st">"isBackground"</span>: <span class="c-kw">true</span>
+    },
+    {
+      <span class="c-st">"label"</span>:   <span class="c-st">"Run Tests"</span>,
+      <span class="c-st">"type"</span>:    <span class="c-st">"shell"</span>,
+      <span class="c-st">"command"</span>: <span class="c-st">"./gradlew test connectedAndroidTest"</span>
+    }
+  ]
+}</div>
+  </div>
+</div>
+
+<!-- Tab: UI Views -->
+<div class="tab-panel" id="tab-views">
+  <div class="sec-title">UI Views — Gambaran Tampilan Aplikasi</div>
+  <p class="views-intro">
+    Mockup ini menggambarkan <strong style="color:#fff">estimasi tampilan</strong> setiap layar utama Samuhita. Warna, spacing, dan komponen mengikuti desain sistem yang sudah didefinisikan. Gunakan ini sebagai acuan saat mengimplementasikan Fragment & layout XML.
+  </p>
+
+  <!-- Flow row with 4 screens -->
+  <div class="flow-row">
+
+    <!-- Screen 1: Radar / Discovery -->
+    <div class="screen-wrap">
+      <div class="screen-label">① Radar</div>
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-statusbar"><span>9:41</span><span>▲ ◼ ▮▮▮</span></div>
+        <div class="phone-screen">
+          <div class="s-topbar">
+            <div>
+              <div class="s-topbar-title">Samuhita</div>
+              <div class="s-topbar-sub">● Scanning...</div>
+            </div>
+            <span class="s-topbar-icon">⚙</span>
+          </div>
+          <!-- Radar visualization -->
+          <div class="radar-ring-area">
+            <svg width="160" height="160" viewBox="0 0 160 160">
+              <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(232,148,26,0.08)" stroke-width="1"/>
+              <circle cx="80" cy="80" r="48" fill="none" stroke="rgba(232,148,26,0.12)" stroke-width="1"/>
+              <circle cx="80" cy="80" r="26" fill="none" stroke="rgba(232,148,26,0.18)" stroke-width="1"/>
+              <line x1="80" y1="10" x2="80" y2="150" stroke="rgba(232,148,26,0.06)" stroke-width="1"/>
+              <line x1="10" y1="80" x2="150" y2="80" stroke="rgba(232,148,26,0.06)" stroke-width="1"/>
+              <!-- Sweep line -->
+              <line x1="80" y1="80" x2="148" y2="52" stroke="rgba(232,148,26,0.35)" stroke-width="1.5"/>
+              <path d="M80,80 L148,52 A70,70 0 0,0 80,10 Z" fill="rgba(232,148,26,0.04)"/>
+            </svg>
+            <!-- Self dot -->
+            <div class="peer-dot self" style="left:50%;top:50%;transform:translate(-50%,-50%)">👤<span class="peer-lbl">Kamu</span></div>
+            <!-- Peer dots -->
+            <div class="peer-dot" style="left:72%;top:22%">👤<span class="peer-lbl">Ari</span></div>
+            <div class="peer-dot" style="left:20%;top:38%">👤<span class="peer-lbl">Sari</span></div>
+            <div class="peer-dot" style="left:62%;top:68%">👤<span class="peer-lbl">Budi</span></div>
+          </div>
+          <div class="radar-status">3 perangkat ditemukan · P2P_CLUSTER</div>
+          <div class="radar-peer-list">
+            <div class="rpl-item">
+              <div class="rpl-avatar">👤</div>
+              <div class="rpl-info"><div class="rpl-name">Ari Santoso</div><div class="rpl-dist">~2m · Android</div></div>
+              <div class="rpl-action">Pair</div>
+            </div>
+            <div class="rpl-item">
+              <div class="rpl-avatar">👤</div>
+              <div class="rpl-info"><div class="rpl-name">Sari Dewi</div><div class="rpl-dist">~5m · Android</div></div>
+              <div class="rpl-action paired">✓ Paired</div>
+            </div>
+          </div>
+          <div class="s-bottomnav">
+            <div class="s-nav-item active"><span class="s-nav-icon">📡</span><span class="s-nav-lbl" style="color:var(--saffron)">Radar</span></div>
+            <div class="s-nav-item"><span class="s-nav-icon">💬</span><span class="s-nav-lbl">Chat</span></div>
+            <div class="s-nav-item"><span class="s-nav-icon">⚙</span><span class="s-nav-lbl">Settings</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-desc">Scan perangkat terdekat, tampilkan radar animasi, bisa pair / chat</div>
+    </div>
+
+    <!-- Arrow -->
+    <div class="flow-arrow">→<div class="flow-arrow-label">tap Pair</div></div>
+
+    <!-- Screen 2: Pairing Dialog -->
+    <div class="screen-wrap">
+      <div class="screen-label">② Pairing</div>
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-statusbar"><span>9:41</span><span>▲ ◼ ▮▮▮</span></div>
+        <div class="phone-screen">
+          <div class="s-topbar">
+            <div>
+              <div class="s-topbar-title">Samuhita</div>
+              <div class="s-topbar-sub">● Scanning...</div>
+            </div>
+            <span class="s-topbar-icon">⚙</span>
+          </div>
+          <div class="radar-ring-area">
+            <svg width="160" height="160" viewBox="0 0 160 160">
+              <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(232,148,26,0.08)" stroke-width="1"/>
+              <circle cx="80" cy="80" r="48" fill="none" stroke="rgba(232,148,26,0.12)" stroke-width="1"/>
+              <circle cx="80" cy="80" r="26" fill="none" stroke="rgba(232,148,26,0.18)" stroke-width="1"/>
+            </svg>
+            <div class="peer-dot self" style="left:50%;top:50%;transform:translate(-50%,-50%)">👤</div>
+            <div class="peer-dot" style="left:72%;top:22%;opacity:0.3">👤</div>
+            <div class="peer-dot" style="left:20%;top:38%">👤<span class="peer-lbl">Sari</span></div>
+          </div>
+          <!-- Pairing bottom sheet overlay -->
+          <div class="pairing-overlay">
+            <div class="pairing-sheet">
+              <div class="pairing-handle"></div>
+              <div class="pairing-title">Verifikasi Pairing</div>
+              <div class="pairing-peer">Sari Dewi ingin terhubung</div>
+              <div class="pairing-pin">4 8 2 9</div>
+              <div class="pairing-sub">Pastikan kode ini sama di kedua perangkat.<br>Kode diverifikasi dengan HMAC-SHA256.</div>
+              <div class="pairing-btns">
+                <div class="pairing-btn reject">✕ Tolak</div>
+                <div class="pairing-btn accept">✓ Terima</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-desc">BottomSheet: kode verifikasi 4-digit + HMAC challenge-response</div>
+    </div>
+
+    <!-- Arrow -->
+    <div class="flow-arrow">→<div class="flow-arrow-label">Terima</div></div>
+
+    <!-- Screen 3: Conversation List -->
+    <div class="screen-wrap">
+      <div class="screen-label">③ Conversations</div>
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-statusbar"><span>9:41</span><span>▲ ◼ ▮▮▮</span></div>
+        <div class="phone-screen">
+          <div class="s-topbar">
+            <div>
+              <div class="s-topbar-title">💬 Pesan</div>
+              <div class="s-topbar-sub">2 kontak paired</div>
+            </div>
+            <span class="s-topbar-icon">✏️</span>
+          </div>
+          <!-- Search bar -->
+          <div style="padding:6px 10px;">
+            <div style="background:var(--surface2);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:5px 10px;font-size:9px;color:var(--stone);font-family:'JetBrains Mono',monospace;">🔍 Cari percakapan...</div>
+          </div>
+          <div class="conv-list">
+            <div class="conv-item">
+              <div class="conv-avatar online">👤</div>
+              <div class="conv-body">
+                <div class="conv-name">Sari Dewi</div>
+                <div class="conv-preview">🔒 Hei, pesan diterima nih!</div>
+              </div>
+              <div class="conv-meta">
+                <span class="conv-time">09:38</span>
+                <div class="conv-badge">2</div>
+              </div>
+            </div>
+            <div class="conv-item">
+              <div class="conv-avatar online">👤</div>
+              <div class="conv-body">
+                <div class="conv-name">Ari Santoso</div>
+                <div class="conv-preview">🔒 File foto sudah diterima</div>
+              </div>
+              <div class="conv-meta">
+                <span class="conv-time">09:12</span>
+              </div>
+            </div>
+            <div class="conv-item">
+              <div class="conv-avatar offline">👤</div>
+              <div class="conv-body">
+                <div class="conv-name">Budi Prakoso</div>
+                <div class="conv-preview" style="color:var(--stone)">Offline · terakhir 1j lalu</div>
+              </div>
+              <div class="conv-meta">
+                <span class="conv-time">08:55</span>
+              </div>
+            </div>
+          </div>
+          <div class="s-bottomnav">
+            <div class="s-nav-item"><span class="s-nav-icon">📡</span><span class="s-nav-lbl">Radar</span></div>
+            <div class="s-nav-item active"><span class="s-nav-icon">💬</span><span class="s-nav-lbl" style="color:var(--saffron)">Chat</span></div>
+            <div class="s-nav-item"><span class="s-nav-icon">⚙</span><span class="s-nav-lbl">Settings</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-desc">Daftar semua kontak paired, status online, badge pesan baru</div>
+    </div>
+
+    <!-- Arrow -->
+    <div class="flow-arrow">→<div class="flow-arrow-label">buka chat</div></div>
+
+    <!-- Screen 4: Chat -->
+    <div class="screen-wrap">
+      <div class="screen-label">④ Chat</div>
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-statusbar"><span>9:41</span><span>▲ ◼ ▮▮▮</span></div>
+        <div class="phone-screen" style="display:flex;flex-direction:column;">
+          <div class="s-topbar">
+            <span style="font-size:13px;cursor:pointer;color:var(--stone)">←</span>
+            <div class="conv-avatar online" style="width:26px;height:26px;border-radius:50%;background:rgba(79,59,255,0.25);border:1.5px solid var(--teal);display:flex;align-items:center;justify-content:center;font-size:12px;">👤</div>
+            <div style="flex:1">
+              <div class="s-topbar-title" style="font-size:11px">Sari Dewi</div>
+              <div class="s-topbar-sub" style="color:var(--teal)">● Online · P2P</div>
+            </div>
+            <span style="font-size:11px;color:var(--stone)">🔒</span>
+          </div>
+          <div class="chat-msgs" style="flex:1">
+            <!-- Date separator -->
+            <div style="text-align:center;font-size:7.5px;color:var(--stone);font-family:'JetBrains Mono',monospace;margin:2px 0 4px">Hari ini</div>
+            <div class="msg-row in">
+              <div>
+                <div class="msg-bubble">Hei, bisa dengar saya?</div>
+                <div class="msg-time">09:35</div>
+              </div>
+            </div>
+            <div class="msg-row out">
+              <div style="display:flex;flex-direction:column;align-items:flex-end">
+                <div class="msg-bubble">Bisa! Koneksi stabil 👍</div>
+                <div style="display:flex;gap:4px;align-items:center">
+                  <span class="msg-time">09:36</span>
+                  <span class="msg-status">✓✓</span>
+                </div>
+              </div>
+            </div>
+            <div class="msg-row in">
+              <div>
+                <div class="msg-bubble">Kirim foto yuk, test transfer</div>
+                <div class="msg-time">09:37</div>
+              </div>
+            </div>
+            <!-- File message -->
+            <div class="msg-row out">
+              <div style="display:flex;flex-direction:column;align-items:flex-end">
+                <div class="msg-bubble" style="display:flex;align-items:center;gap:5px;">
+                  <span style="font-size:16px">🖼️</span>
+                  <div>
+                    <div style="font-size:9px">foto_pantai.jpg</div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(208,202,255,0.6)">2.3 MB · Via Wi-Fi Direct</div>
+                    <div style="margin-top:3px;height:3px;border-radius:2px;background:rgba(255,255,255,0.1)">
+                      <div style="width:80%;height:100%;background:var(--teal);border-radius:2px"></div>
+                    </div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:4px;align-items:center">
+                  <span class="msg-time">09:38</span>
+                  <span class="msg-status">✓</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-bar">
+            <span class="chat-bar-attach">📎</span>
+            <div class="chat-bar-input">Ketik pesan...</div>
+            <div class="chat-bar-send">➤</div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-desc">Bubble chat E2E, status ✓ SENT ✓✓ DELIVERED, progress bar transfer file</div>
+    </div>
+
+    <!-- Arrow -->
+    <div class="flow-arrow">→<div class="flow-arrow-label">settings</div></div>
+
+    <!-- Screen 5: Settings -->
+    <div class="screen-wrap">
+      <div class="screen-label">⑤ Settings</div>
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-statusbar"><span>9:41</span><span>▲ ◼ ▮▮▮</span></div>
+        <div class="phone-screen">
+          <div class="s-topbar">
+            <div class="s-topbar-title">⚙ Pengaturan</div>
+          </div>
+          <div class="settings-profile">
+            <div class="settings-avatar">👤</div>
+            <div class="settings-name">Nama Saya</div>
+            <div class="settings-id">ID: a1b2c3d4</div>
+          </div>
+          <div class="settings-list">
+            <div class="settings-item">
+              <span class="settings-item-icon">📡</span>
+              <span class="settings-item-label">Mode Scan</span>
+              <span class="settings-item-value">Adaptive</span>
+            </div>
+            <div class="settings-item">
+              <span class="settings-item-icon">🔋</span>
+              <span class="settings-item-label">Battery Saver</span>
+              <div class="settings-toggle on"></div>
+            </div>
+            <div class="settings-item">
+              <span class="settings-item-icon">🔔</span>
+              <span class="settings-item-label">Notifikasi</span>
+              <div class="settings-toggle on"></div>
+            </div>
+            <div class="settings-item">
+              <span class="settings-item-icon">🌐</span>
+              <span class="settings-item-label">Mesh Relay</span>
+              <div class="settings-toggle off"></div>
+            </div>
+            <div class="settings-item">
+              <span class="settings-item-icon">🗄</span>
+              <span class="settings-item-label">Storage</span>
+              <span class="settings-item-value">48 MB</span>
+            </div>
+            <div class="settings-item">
+              <span class="settings-item-icon">🔒</span>
+              <span class="settings-item-label">Enkripsi</span>
+              <span class="settings-item-value" style="color:var(--teal)">AES-256-GCM</span>
+            </div>
+            <div class="settings-item" style="border:none">
+              <span class="settings-item-icon">ℹ️</span>
+              <span class="settings-item-label">Versi</span>
+              <span class="settings-item-value">0.2.0-alpha</span>
+            </div>
+          </div>
+          <div class="s-bottomnav">
+            <div class="s-nav-item"><span class="s-nav-icon">📡</span><span class="s-nav-lbl">Radar</span></div>
+            <div class="s-nav-item"><span class="s-nav-icon">💬</span><span class="s-nav-lbl">Chat</span></div>
+            <div class="s-nav-item active"><span class="s-nav-icon">⚙</span><span class="s-nav-lbl" style="color:var(--saffron)">Settings</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-desc">Profil user, toggle battery saver, info enkripsi, versi app</div>
+    </div>
+
+  </div><!-- end flow-row -->
+
+  <div class="sec-title">Peta Navigasi</div>
+  <div class="ui-legend">
+    <div class="ui-legend-item"><div class="ui-legend-dot" style="background:var(--indigo-soft)"></div> RadarFragment — discovery &amp; pairing</div>
+    <div class="ui-legend-item"><div class="ui-legend-dot" style="background:var(--saffron)"></div> PairingDialog — BottomSheetDialogFragment</div>
+    <div class="ui-legend-item"><div class="ui-legend-dot" style="background:var(--teal)"></div> ChatFragment — RecyclerView bubble, DeliveryStatus</div>
+    <div class="ui-legend-item"><div class="ui-legend-dot" style="background:var(--lotus)"></div> MediaViewerFragment — foto/video fullscreen (Phase 4)</div>
+    <div class="ui-legend-item"><div class="ui-legend-dot" style="background:#e5c07b"></div> SettingsFragment — DataStore preferences</div>
+    <div class="ui-legend-item"><div class="ui-legend-dot" style="background:var(--stone)"></div> MainActivity — NavGraph host, single Activity</div>
+  </div>
+
+  <div class="sec-title" style="margin-top:24px">Status Implementasi per Layar</div>
+  <div class="roadmap" style="gap:8px">
+    <div class="phase-card phase-card-done">
+      <div class="phase-sidebar"><div class="phase-num" style="font-size:14px">①</div><div class="phase-status status-done">DONE</div></div>
+      <div class="phase-body">
+        <div class="phase-title">RadarFragment — Scan &amp; Discovery</div>
+        <div class="phase-tasks">
+          <div class="phase-task"><span class="task-check">✓</span>Animasi radar SVG + sweep line</div>
+          <div class="phase-task"><span class="task-check">✓</span>RecyclerView peer list dengan action Pair / Chat</div>
+          <div class="phase-task"><span class="task-check">✓</span>5 UI states: Loading, Scanning, Found, Empty, Error</div>
+          <div class="phase-task"><span class="task-check">✓</span>AdaptiveScanScheduler terintegrasi</div>
+        </div>
+      </div>
+    </div>
+    <div class="phase-card phase-card-done">
+      <div class="phase-sidebar"><div class="phase-num" style="font-size:14px">②</div><div class="phase-status status-done">DONE</div></div>
+      <div class="phase-body">
+        <div class="phase-title">PairingDialog — HMAC Verification Sheet</div>
+        <div class="phase-tasks">
+          <div class="phase-task"><span class="task-check">✓</span>BottomSheetDialogFragment dengan kode 4-digit</div>
+          <div class="phase-task"><span class="task-check">✓</span>Tombol Terima / Tolak + HMAC-SHA256 challenge-response</div>
+          <div class="phase-task"><span class="task-check">✓</span>RadarUiEffect — Snackbar sukses / gagal</div>
+        </div>
+      </div>
+    </div>
+    <div class="phase-card" style="border-left:3px solid rgba(232,148,26,0.5)">
+      <div class="phase-sidebar"><div class="phase-num" style="font-size:14px">③</div><div class="phase-status status-active">NEXT</div></div>
+      <div class="phase-body">
+        <div class="phase-title">ChatFragment — Real-time Messaging (Phase 3)</div>
+        <div class="phase-tasks">
+          <div class="phase-task"><span class="task-dot"></span>ConversationListFragment + adapter</div>
+          <div class="phase-task"><span class="task-dot"></span>ChatFragment bubble UI, RecyclerView</div>
+          <div class="phase-task"><span class="task-dot"></span>DeliveryStatus: SENT → DELIVERED → READ</div>
+          <div class="phase-task"><span class="task-dot"></span>AES-256-GCM enkripsi setiap pesan</div>
+        </div>
+      </div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-sidebar"><div class="phase-num" style="font-size:14px">④</div><div class="phase-status status-todo">TODO</div></div>
+      <div class="phase-body">
+        <div class="phase-title">MediaViewerFragment — File Transfer (Phase 4)</div>
+        <div class="phase-tasks">
+          <div class="phase-task"><span class="task-dot" style="background:var(--stone)"></span>Progress bar transfer dengan Nearby FILE payload</div>
+          <div class="phase-task"><span class="task-dot" style="background:var(--stone)"></span>ThumbnailCache lazy load</div>
+          <div class="phase-task"><span class="task-dot" style="background:var(--stone)"></span>Fullscreen viewer foto/video</div>
+        </div>
+      </div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-sidebar"><div class="phase-num" style="font-size:14px">⑤</div><div class="phase-status status-todo">TODO</div></div>
+      <div class="phase-body">
+        <div class="phase-title">SettingsFragment — Preferences</div>
+        <div class="phase-tasks">
+          <div class="phase-task"><span class="task-dot" style="background:var(--stone)"></span>SettingsDataStore (DataStore Preferences)</div>
+          <div class="phase-task"><span class="task-dot" style="background:var(--stone)"></span>Toggle battery saver, notifikasi, mesh relay</div>
+          <div class="phase-task"><span class="task-dot" style="background:var(--stone)"></span>Tampilkan Device ID &amp; enkripsi info</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tab: App Flow -->
+<div class="tab-panel" id="tab-appflow">
+  <div class="sec-title">App Flow — Navigasi &amp; Pesan P2P</div>
+  <p style="margin:0 0 20px;color:var(--stone2);font-size:13px;">Diagram alur lengkap dari startup hingga pengiriman &amp; penerimaan pesan terenkripsi.</p>
+
+  <div style="overflow-x:auto;">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1280" width="960" style="min-width:720px;display:block;">
+    <defs>
+      <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#7c6f9f"/>
+      </marker>
+      <marker id="arr-em" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#1dbf9a"/>
+      </marker>
+      <marker id="arr-sf" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#e8941a"/>
+      </marker>
+      <marker id="arr-rd" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#e05c5c"/>
+      </marker>
+    </defs>
+
+    <!-- ═══ LEGEND ══════════════════════════════════════════════════ -->
+    <rect x="620" y="20" width="320" height="120" rx="8" fill="#1a1630" stroke="#2e294a" stroke-width="1"/>
+    <text x="780" y="42" text-anchor="middle" fill="#b0a8cc" font-size="12" font-weight="bold">LEGENDA</text>
+    <rect x="636" y="54" width="14" height="14" rx="3" fill="#3d3470"/><text x="658" y="65" fill="#c0b8e0" font-size="11">Startup / System</text>
+    <rect x="636" y="76" width="14" height="14" rx="3" fill="#1a3d6e"/><text x="658" y="87" fill="#c0b8e0" font-size="11">Navigation / UI</text>
+    <rect x="636" y="98" width="14" height="14" rx="3" fill="#0f3d2e"/><text x="658" y="109" fill="#c0b8e0" font-size="11">Messaging / Domain</text>
+    <rect x="780" y="54" width="14" height="14" rx="3" fill="#3d2800"/><text x="802" y="65" fill="#c0b8e0" font-size="11">Crypto / Security</text>
+    <rect x="780" y="76" width="14" height="14" rx="3" fill="#3d0f0f"/><text x="802" y="87" fill="#c0b8e0" font-size="11">Error / Denied</text>
+    <rect x="780" y="98" width="14" height="14" rx="3" fill="#2e294a" stroke="#7c6f9f" stroke-width="1"/><text x="802" y="109" fill="#c0b8e0" font-size="11">Decision</text>
+
+    <!-- ═══ STARTUP LANE ════════════════════════════════════════════ -->
+    <!-- App Launch -->
+    <rect x="20" y="20" width="180" height="44" rx="22" fill="#3d3470" stroke="#6c5fc7" stroke-width="1.5"/>
+    <text x="110" y="37" text-anchor="middle" fill="#e8e4ff" font-size="12" font-weight="bold">App Launch</text>
+    <text x="110" y="54" text-anchor="middle" fill="#a09acc" font-size="10">SamuhitaApp · @HiltAndroidApp</text>
+
+    <!-- arrow down -->
+    <line x1="110" y1="64" x2="110" y2="94" stroke="#7c6f9f" stroke-width="1.5" marker-end="url(#arr)"/>
+
+    <!-- Check Permissions -->
+    <polygon points="110,96 210,126 110,156 10,126" fill="#2e294a" stroke="#7c6f9f" stroke-width="1.5"/>
+    <text x="110" y="122" text-anchor="middle" fill="#c0b8e0" font-size="11">Cek Permissions</text>
+    <text x="110" y="138" text-anchor="middle" fill="#a09acc" font-size="10">BT · WiFi · Location</text>
+
+    <!-- granted arrow -->
+    <line x1="110" y1="156" x2="110" y2="186" stroke="#1dbf9a" stroke-width="1.5" marker-end="url(#arr-em)"/>
+    <text x="116" y="175" fill="#1dbf9a" font-size="10">granted</text>
+
+    <!-- denied arrow -->
+    <line x1="210" y1="126" x2="290" y2="126" stroke="#e05c5c" stroke-width="1.5" marker-end="url(#arr-rd)"/>
+    <text x="220" y="120" fill="#e05c5c" font-size="10">denied</text>
+
+    <!-- Permission Card (denied) -->
+    <rect x="290" y="104" width="160" height="44" rx="6" fill="#3d0f0f" stroke="#e05c5c" stroke-width="1"/>
+    <text x="370" y="122" text-anchor="middle" fill="#ffaaaa" font-size="11">Show Permission Card</text>
+    <text x="370" y="138" text-anchor="middle" fill="#cc8888" font-size="10">btnGrantPermission</text>
+
+    <!-- Start NearbyService -->
+    <rect x="20" y="186" width="180" height="44" rx="6" fill="#3d3470" stroke="#6c5fc7" stroke-width="1.5"/>
+    <text x="110" y="204" text-anchor="middle" fill="#e8e4ff" font-size="12" font-weight="bold">Start NearbyService</text>
+    <text x="110" y="220" text-anchor="middle" fill="#a09acc" font-size="10">Foreground Service · AdaptiveScan</text>
+
+    <!-- arrow -->
+    <line x1="110" y1="230" x2="110" y2="260" stroke="#7c6f9f" stroke-width="1.5" marker-end="url(#arr)"/>
+
+    <!-- MainActivity -->
+    <rect x="20" y="260" width="180" height="44" rx="6" fill="#1a3d6e" stroke="#2979d5" stroke-width="1.5"/>
+    <text x="110" y="278" text-anchor="middle" fill="#b8d4ff" font-size="12" font-weight="bold">MainActivity</text>
+    <text x="110" y="294" text-anchor="middle" fill="#88a8dd" font-size="10">NavHostFragment · BottomNav</text>
+
+    <!-- ═══ BOTTOM NAV SPLIT ═══════════════════════════════════════ -->
+    <!-- horizontal line from MainActivity -->
+    <line x1="110" y1="304" x2="110" y2="334" stroke="#7c6f9f" stroke-width="1.5"/>
+    <line x1="110" y1="334" x2="760" y2="334" stroke="#7c6f9f" stroke-width="1.5"/>
+    <!-- three drops -->
+    <line x1="160" y1="334" x2="160" y2="364" stroke="#7c6f9f" stroke-width="1.5" marker-end="url(#arr)"/>
+    <line x1="460" y1="334" x2="460" y2="364" stroke="#7c6f9f" stroke-width="1.5" marker-end="url(#arr)"/>
+    <line x1="760" y1="334" x2="760" y2="364" stroke="#7c6f9f" stroke-width="1.5" marker-end="url(#arr)"/>
+
+    <!-- BottomNav Label -->
+    <text x="460" y="328" text-anchor="middle" fill="#7c6f9f" font-size="10">BottomNavigationView</text>
+
+    <!-- ── RADAR BRANCH ── -->
+    <rect x="60" y="364" width="200" height="44" rx="6" fill="#1a3d6e" stroke="#2979d5" stroke-width="1.5"/>
+    <text x="160" y="382" text-anchor="middle" fill="#b8d4ff" font-size="12" font-weight="bold">RadarFragment</text>
+    <text x="160" y="398" text-anchor="middle" fill="#88a8dd" font-size="10">Scan · Advertise · P2P_CLUSTER</text>
+
+    <line x1="160" y1="408" x2="160" y2="438" stroke="#7c6f9f" stroke-width="1.5" marker-end="url(#arr)"/>
+
+    <!-- Discovered Peers -->
+    <rect x="60" y="438" width="200" height="44" rx="6" fill="#1a3d6e" stroke="#2979d5" stroke-width="1"/>
+    <text x="160" y="456" text-anchor="middle" fill="#b8d4ff" font-size="11">Daftar Peer Ditemukan</text>
+    <text x="160" y="472" text-anchor="middle" fill="#88a8dd" font-size="10">PeerAdapter · RecyclerView</text>
+
+    <line x1="160" y1="482" x2="160" y2="512" stroke="#7c6f9f" stroke-width="1.5" marker-end="url(#arr)"/>
+
+    <!-- Trust decision -->
+    <polygon points="160,514 260,544 160,574 60,544" fill="#2e294a" stroke="#7c6f9f" stroke-width="1.5"/>
+    <text x="160" y="540" text-anchor="middle" fill="#c0b8e0" font-size="11">trustLevel ≥ 1?</text>
+    <text x="160" y="556" text-anchor="middle" fill="#a09acc" font-size="9">paired?</text>
+
+    <!-- yes → chat -->
+    <line x1="260" y1="544" x2="340" y2="544" stroke="#1dbf9a" stroke-width="1.5" marker-end="url(#arr-em)"/>
+    <text x="270" y="538" fill="#1dbf9a" font-size="10">ya</text>
+
+    <!-- no → pairing -->
+    <line x1="160" y1="574" x2="160" y2="604" stroke="#e8941a" stroke-width="1.5" marker-end="url(#arr-sf)"/>
+    <text x="168" y="594" fill="#e8941a" font-size="10">tidak</text>
+
+    <!-- Pairing Dialog -->
+    <rect x="60" y="604" width="200" height="44" rx="6" fill="#3d2800" stroke="#e8941a" stroke-width="1.5"/>
+    <text x="160" y="622" text-anchor="middle" fill="#ffd080" font-size="11" font-weight="bold">PairingDialog</text>
+    <text x="160" y="638" text-anchor="middle" fill="#c8a060" font-size="10">HMAC-SHA256 Challenge/Response</text>
+
+    <line x1="160" y1="648" x2="160" y2="678" stroke="#7c6f9f" stroke-width="1.5" marker-end="url(#arr)"/>
+
+    <!-- HMAC result -->
+    <polygon points="160,680 260,710 160,740 60,710" fill="#2e294a" stroke="#7c6f9f" stroke-width="1.5"/>
+    <text x="160" y="706" text-anchor="middle" fill="#c0b8e0" font-size="11">HMAC Valid?</text>
+    <text x="160" y="722" text-anchor="middle" fill="#a09acc" font-size="9">verifyHmac()</text>
+
+    <!-- verified → trustLevel=1, back to radar -->
+    <line x1="260" y1="710" x2="310" y2="710" stroke="#1dbf9a" stroke-width="1.5" marker-end="url(#arr-em)"/>
+    <text x="266" y="704" fill="#1dbf9a" font-size="10">valid</text>
+    <rect x="310" y="692" width="130" height="36" rx="5" fill="#0f3d2e" stroke="#1dbf9a" stroke-width="1"/>
+    <text x="375" y="707" text-anchor="middle" fill="#80ffcc" font-size="10">setTrustLevel(1)</text>
+    <text x="375" y="720" text-anchor="middle" fill="#60cc99" font-size="9">Peer disimpan ke Room</text>
+
+    <!-- failed -->
+    <line x1="60" y1="710" x2="20" y2="710" stroke="#e05c5c" stroke-width="1.5"/>
+    <line x1="20" y1="710" x2="20" y2="438" stroke="#e05c5c" stroke-width="1.5"/>
+    <line x1="20" y1="438" x2="60" y2="438" stroke="#e05c5c" stroke-width="1.5" marker-end="url(#arr-rd)"/>
+    <text x="8" y="580" fill="#e05c5c" font-size="10" transform="rotate(-90,8,580)">gagal · disconnect</text>
+
+    <!-- ── CONVERSATIONS BRANCH ── -->
+    <rect x="360" y="364" width="200" height="44" rx="6" fill="#1a3d6e" stroke="#2979d5" stroke-width="1.5"/>
+    <text x="460" y="382" text-anchor="middle" fill="#b8d4ff" font-size="12" font-weight="bold">ConversationsFragment</text>
+    <text x="460" y="398" text-anchor="middle" fill="#88a8dd" font-size="10">Daftar chat · paired peers</text>
+
+    <line x1="460" y1="408" x2="460" y2="438" stroke="#7c6f9f" stroke-width="1.5" marker-end="url(#arr)"/>
+
+    <rect x="360" y="438" width="200" height="44" rx="6" fill="#1a3d6e" stroke="#2979d5" stroke-width="1"/>
+    <text x="460" y="456" text-anchor="middle" fill="#b8d4ff" font-size="11">ConversationAdapter</text>
+    <text x="460" y="472" text-anchor="middle" fill="#88a8dd" font-size="10">nama · pesan terakhir · waktu</text>
+
+    <!-- tap conversation → chat -->
+    <line x1="460" y1="482" x2="460" y2="544" stroke="#7c6f9f" stroke-width="1.5" marker-end="url(#arr)"/>
+    <text x="468" y="520" fill="#a09acc" font-size="10">tap item</text>
+
+    <!-- ChatFragment CENTER -->
+    <rect x="340" y="544" width="240" height="50" rx="6" fill="#1a3d6e" stroke="#6c5fc7" stroke-width="2"/>
+    <text x="460" y="565" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="bold">ChatFragment</text>
+    <text x="460" y="582" text-anchor="middle" fill="#aaaaee" font-size="10">MessageAdapter · bubble RecyclerView</text>
+
+    <!-- ── SETTINGS BRANCH ── -->
+    <rect x="660" y="364" width="200" height="44" rx="6" fill="#1a3d6e" stroke="#2979d5" stroke-width="1.5"/>
+    <text x="760" y="382" text-anchor="middle" fill="#b8d4ff" font-size="12" font-weight="bold">SettingsFragment</text>
+    <text x="760" y="398" text-anchor="middle" fill="#88a8dd" font-size="10">Profil · DeviceId · Nama</text>
+
+    <line x1="760" y1="408" x2="760" y2="438" stroke="#7c6f9f" stroke-width="1.5" marker-end="url(#arr)"/>
+
+    <rect x="660" y="438" width="200" height="44" rx="6" fill="#1a3d6e" stroke="#2979d5" stroke-width="1"/>
+    <text x="760" y="456" text-anchor="middle" fill="#b8d4ff" font-size="11">SettingsDataStore</text>
+    <text x="760" y="472" text-anchor="middle" fill="#88a8dd" font-size="10">DataStore · displayName · deviceId</text>
+
+    <!-- Note: no action arrow = accessed via BottomNav directly -->
+    <rect x="660" y="502" width="200" height="30" rx="4" fill="#1a1630" stroke="#3a3460" stroke-width="1" stroke-dasharray="4"/>
+    <text x="760" y="521" text-anchor="middle" fill="#7c6f9f" font-size="10">⚠ Tanpa action arrow —</text>
+    <text x="760" y="533" text-anchor="middle" fill="#7c6f9f" font-size="10">navigasi langsung via BottomNav</text>
+
+    <!-- ═══ MESSAGING FLOW ════════════════════════════════════════ -->
+    <line x1="460" y1="594" x2="460" y2="634" stroke="#7c6f9f" stroke-width="1.5" marker-end="url(#arr)"/>
+    <text x="468" y="618" fill="#a09acc" font-size="10">kirim pesan</text>
+
+    <!-- SendMessageUseCase -->
+    <rect x="340" y="634" width="240" height="44" rx="6" fill="#0f3d2e" stroke="#1dbf9a" stroke-width="1.5"/>
+    <text x="460" y="652" text-anchor="middle" fill="#80ffcc" font-size="12" font-weight="bold">SendMessageUseCase</text>
+    <text x="460" y="668" text-anchor="middle" fill="#60cc99" font-size="10">save SENDING → encrypt → wrap → send</text>
+
+    <line x1="460" y1="678" x2="460" y2="708" stroke="#1dbf9a" stroke-width="1.5" marker-end="url(#arr-em)"/>
+
+    <!-- CryptoManager -->
+    <rect x="340" y="708" width="240" height="44" rx="6" fill="#3d2800" stroke="#e8941a" stroke-width="1.5"/>
+    <text x="460" y="726" text-anchor="middle" fill="#ffd080" font-size="12" font-weight="bold">CryptoManager</text>
+    <text x="460" y="742" text-anchor="middle" fill="#c8a060" font-size="10">AES-256-GCM · Android Keystore · IV 12B</text>
+
+    <line x1="460" y1="752" x2="460" y2="782" stroke="#e8941a" stroke-width="1.5" marker-end="url(#arr-sf)"/>
+
+    <!-- MessageEnvelope -->
+    <rect x="340" y="782" width="240" height="50" rx="6" fill="#0f3d2e" stroke="#1dbf9a" stroke-width="1.5"/>
+    <text x="460" y="800" text-anchor="middle" fill="#80ffcc" font-size="11" font-weight="bold">MessageEnvelope</text>
+    <text x="460" y="816" text-anchor="middle" fill="#60cc99" font-size="10">messageId · sourceId · destId · payload</text>
+    <text x="460" y="828" text-anchor="middle" fill="#48996e" font-size="10">TTL=3 · hopCount · timestamp</text>
+
+    <line x1="460" y1="832" x2="460" y2="862" stroke="#1dbf9a" stroke-width="1.5" marker-end="url(#arr-em)"/>
+
+    <!-- NearbyConnectionManager -->
+    <rect x="340" y="862" width="240" height="44" rx="6" fill="#3d3470" stroke="#6c5fc7" stroke-width="1.5"/>
+    <text x="460" y="880" text-anchor="middle" fill="#e8e4ff" font-size="12" font-weight="bold">NearbyConnectionManager</text>
+    <text x="460" y="896" text-anchor="middle" fill="#a09acc" font-size="10">sendTextMessage() · Payload.fromBytes()</text>
+
+    <!-- arrow to receiver -->
+    <line x1="460" y1="906" x2="460" y2="940" stroke="#7c6f9f" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+    <text x="468" y="928" fill="#a09acc" font-size="10">Nearby API · BT/WiFi</text>
+
+    <!-- Receiver side -->
+    <rect x="340" y="940" width="240" height="44" rx="6" fill="#3d3470" stroke="#6c5fc7" stroke-width="1.5"/>
+    <text x="460" y="958" text-anchor="middle" fill="#e8e4ff" font-size="12" font-weight="bold">onPayloadReceived()</text>
+    <text x="460" y="974" text-anchor="middle" fill="#a09acc" font-size="10">parse ControlMessage / MessageEnvelope</text>
+
+    <line x1="460" y1="984" x2="460" y2="1014" stroke="#7c6f9f" stroke-width="1.5" marker-end="url(#arr)"/>
+
+    <!-- Decrypt + emit -->
+    <rect x="340" y="1014" width="240" height="44" rx="6" fill="#3d2800" stroke="#e8941a" stroke-width="1.5"/>
+    <text x="460" y="1032" text-anchor="middle" fill="#ffd080" font-size="11" font-weight="bold">Decrypt + Emit TextMessageEvent</text>
+    <text x="460" y="1048" text-anchor="middle" fill="#c8a060" font-size="10">cryptoManager.decrypt() → SharedFlow</text>
+
+    <!-- send DELIVERED -->
+    <line x1="600" y1="1036" x2="660" y2="1036" stroke="#e8941a" stroke-width="1.5" marker-end="url(#arr-sf)"/>
+    <rect x="660" y="1018" width="170" height="36" rx="5" fill="#3d2800" stroke="#e8941a" stroke-width="1"/>
+    <text x="745" y="1033" text-anchor="middle" fill="#ffd080" font-size="10">MSG_DELIVERED ACK</text>
+    <text x="745" y="1047" text-anchor="middle" fill="#c8a060" font-size="9">ControlMessage.delivered(msgId)</text>
+
+    <line x1="460" y1="1058" x2="460" y2="1088" stroke="#7c6f9f" stroke-width="1.5" marker-end="url(#arr)"/>
+
+    <!-- Save to Room -->
+    <rect x="340" y="1088" width="240" height="44" rx="6" fill="#0f3d2e" stroke="#1dbf9a" stroke-width="1.5"/>
+    <text x="460" y="1106" text-anchor="middle" fill="#80ffcc" font-size="11" font-weight="bold">Save to Room · ChatViewModel</text>
+    <text x="460" y="1122" text-anchor="middle" fill="#60cc99" font-size="10">messageRepository.saveMessage() → UI update</text>
+
+    <line x1="460" y1="1132" x2="460" y2="1162" stroke="#7c6f9f" stroke-width="1.5" marker-end="url(#arr)"/>
+
+    <!-- User reads -->
+    <polygon points="460,1164 570,1194 460,1224 350,1194" fill="#2e294a" stroke="#7c6f9f" stroke-width="1.5"/>
+    <text x="460" y="1190" text-anchor="middle" fill="#c0b8e0" font-size="11">Chat Dibuka?</text>
+    <text x="460" y="1206" text-anchor="middle" fill="#a09acc" font-size="9">ChatFragment visible</text>
+
+    <!-- READ ACK -->
+    <line x1="570" y1="1194" x2="660" y2="1194" stroke="#1dbf9a" stroke-width="1.5" marker-end="url(#arr-em)"/>
+    <text x="578" y="1188" fill="#1dbf9a" font-size="10">ya</text>
+    <rect x="660" y="1176" width="170" height="36" rx="5" fill="#0f3d2e" stroke="#1dbf9a" stroke-width="1"/>
+    <text x="745" y="1191" text-anchor="middle" fill="#80ffcc" font-size="10">MSG_READ ACK</text>
+    <text x="745" y="1205" text-anchor="middle" fill="#60cc99" font-size="9">markAsRead() · status=READ</text>
+
+    <!-- not read -->
+    <line x1="350" y1="1194" x2="290" y2="1194" stroke="#7c6f9f" stroke-width="1.5" marker-end="url(#arr)"/>
+    <text x="298" y="1188" fill="#a09acc" font-size="10">tidak</text>
+    <rect x="120" y="1176" width="170" height="36" rx="5" fill="#1a1630" stroke="#3a3460" stroke-width="1"/>
+    <text x="205" y="1191" text-anchor="middle" fill="#8888aa" font-size="10">Tetap DELIVERED</text>
+    <text x="205" y="1205" text-anchor="middle" fill="#666688" font-size="9">dibaca saat buka chat berikutnya</text>
+
+    <!-- ═══ MESH ROUTING NOTE ══════════════════════════════════════ -->
+    <rect x="660" y="862" width="270" height="100" rx="6" fill="#1a1630" stroke="#3a3460" stroke-width="1" stroke-dasharray="5"/>
+    <text x="795" y="882" text-anchor="middle" fill="#7c6f9f" font-size="11" font-weight="bold">⬜ Phase 5 — Mesh Routing</text>
+    <text x="795" y="900" text-anchor="middle" fill="#5c547a" font-size="10">MeshRoutingTable · hop forward</text>
+    <text x="795" y="916" text-anchor="middle" fill="#5c547a" font-size="10">seenMessages dedup · TTL decrement</text>
+    <text x="795" y="932" text-anchor="middle" fill="#5c547a" font-size="10">forward jika destId ≠ myDeviceId</text>
+    <text x="795" y="948" text-anchor="middle" fill="#5c547a" font-size="10">buang jika TTL == 0</text>
+
+  </svg>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="blueprint-footer">
+  <span class="footer-text">Samuhita · Blueprint v2.1 — Phase 3 Complete</span>
+  <span class="footer-ver">Android Native · Kotlin · Offline P2P · 10 Tabs</span>
+</div>
+
+</div>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+const tree = [
+  { name: 'Samuhita/', type: 'dir', open: true, children: [
+    { name: 'app/', type: 'dir', open: true, children: [
+      { name: 'src/main/', type: 'dir', open: true, children: [
+        { name: 'java/com/samuhita/', type: 'dir', open: true, children: [
+          { name: 'core/', type: 'dir', open: true, children: [
+            { name: 'AppDatabase.kt', type: 'kt', note: '3 entities · exportSchema=true' },
+            { name: 'SamuhitaApp.kt', type: 'kt', note: '@HiltAndroidApp' },
+            { name: 'di/', type: 'dir', open: false, children: [
+              { name: 'DatabaseModule.kt', type: 'kt', note: 'Room DAO providers' },
+              { name: 'NearbyModule.kt', type: 'kt', note: 'ConnectionsClient singleton' },
+              { name: 'RepositoryModule.kt', type: 'kt', note: 'interface → impl binding' },
+            ]},
+          ]},
+          { name: 'data/', type: 'dir', open: false, children: [
+            { name: 'local/', type: 'dir', open: false, children: [
+              { name: 'dao/MessageDao.kt', type: 'kt', note: 'Flow queries + CRUD' },
+              { name: 'dao/UserDao.kt', type: 'kt' },
+              { name: 'dao/MediaDao.kt', type: 'kt', note: 'transfer progress' },
+              { name: 'entity/User.kt', type: 'kt', note: 'trustLevel 0/1/2' },
+              { name: 'entity/Message.kt', type: 'kt', note: 'MessageStatus enum' },
+              { name: 'entity/MediaItem.kt', type: 'kt', note: 'TransferStatus enum' },
+            ]},
+            { name: 'repository/', type: 'dir', open: false, children: [
+              { name: 'MessageRepositoryImpl.kt', type: 'kt' },
+              { name: 'PeerRepositoryImpl.kt', type: 'kt' },
+            ]},
+            { name: 'preferences/SettingsDataStore.kt', type: 'kt', note: '✅ Phase 1 — displayName + deviceId DataStore' },
+          ]},
+          { name: 'domain/', type: 'dir', open: false, children: [
+            { name: 'model/Peer.kt', type: 'kt', note: 'domain model — no Android' },
+            { name: 'model/ChatMessage.kt', type: 'kt', note: 'domain model' },
+            { name: 'model/MediaTransfer.kt', type: 'kt', note: 'domain model' },
+            { name: 'repository/MessageRepository.kt', type: 'kt', note: 'interface' },
+            { name: 'repository/PeerRepository.kt', type: 'kt', note: 'interface' },
+            { name: 'usecase/SendMessageUseCase.kt', type: 'kt', note: '⬜ Phase 3' },
+            { name: 'usecase/PairDeviceUseCase.kt', type: 'kt', note: '✅ Phase 2 — onPairingSuccess(peer, keyAlias)' },
+            { name: 'usecase/TransferMediaUseCase.kt', type: 'kt', note: '⬜ Phase 4' },
+            { name: 'usecase/RouteMessageUseCase.kt', type: 'kt', note: '⬜ Phase 5' },
+          ]},
+          { name: 'nearby/', type: 'dir', open: false, children: [
+            { name: 'NearbyConnectionManager.kt', type: 'kt', note: '✅ Phase 1 — P2P_CLUSTER engine' },
+            { name: 'NearbyService.kt', type: 'kt', note: '✅ Phase 1 — foreground service' },
+            { name: 'AdaptiveScanScheduler.kt', type: 'kt', note: '✅ Phase 1 — battery duty cycle' },
+            { name: 'FileTransferManager.kt', type: 'kt', note: '⬜ Phase 4 — Payload.FILE' },
+            { name: 'MeshRoutingTable.kt', type: 'kt', note: '⬜ Phase 5' },
+            { name: 'MessageEnvelope.kt', type: 'kt', note: '✅ Phase 1 — TTL + hop count wrapper' },
+            { name: 'CryptoManager.kt', type: 'kt', note: '✅ Phase 2 — AES-256-GCM + HMAC-SHA256' },
+            { name: 'ControlMessage.kt', type: 'kt', note: '✅ Phase 2 — HMAC handshake messages' },
+          ]},
+          { name: 'ui/', type: 'dir', open: false, children: [
+            { name: 'MainActivity.kt', type: 'kt', note: '✅ Phase 1' },
+            { name: 'radar/', type: 'dir', open: false, children: [
+              { name: 'RadarFragment.kt', type: 'kt', note: '✅ Phase 1' },
+              { name: 'RadarViewModel.kt', type: 'kt', note: '✅ Phase 1' },
+              { name: 'PeerAdapter.kt', type: 'kt', note: '✅ Phase 1' },
+              { name: 'PairingDialog.kt', type: 'kt', note: '✅ Phase 2 — button wired, BottomSheet' },
+            ]},
+            { name: 'chat/', type: 'dir', open: false, children: [
+              { name: 'ChatFragment.kt', type: 'kt', note: '⬜ Phase 3' },
+              { name: 'ChatViewModel.kt', type: 'kt', note: '⬜ Phase 3' },
+              { name: 'MessageAdapter.kt', type: 'kt', note: '⬜ Phase 3 — DiffUtil' },
+            ]},
+            { name: 'media/', type: 'dir', open: false, children: [
+              { name: 'MediaViewerFragment.kt', type: 'kt', note: '⬜ Phase 4' },
+              { name: 'ThumbnailCache.kt', type: 'kt', note: '⬜ Phase 4 — Coil' },
+            ]},
+            { name: 'settings/SettingsFragment.kt', type: 'kt', note: '⬜ Phase 6' },
+          ]},
+        ]},
+        { name: 'res/', type: 'dir', open: false, children: [
+          { name: 'layout/', type: 'dir', open: false, children: [
+            { name: 'activity_main.xml', type: 'xml', note: '✅ Phase 1' },
+            { name: 'fragment_radar.xml', type: 'xml', note: '✅ Phase 1' },
+            { name: 'fragment_chat.xml', type: 'xml', note: '⬜ Phase 3' },
+            { name: 'item_message.xml', type: 'xml', note: '⬜ Phase 3' },
+            { name: 'item_peer.xml', type: 'xml', note: '✅ Phase 1' },
+            { name: 'dialog_pairing.xml', type: 'xml', note: '✅ Phase 2 — + btnAccept/btnReject' },
+          ]},
+          { name: 'navigation/nav_graph.xml', type: 'xml', note: '✅ Phase 1' },
+          { name: 'values/colors.xml', type: 'xml', note: 'saffron + indigo palette' },
+          { name: 'values/strings.xml', type: 'xml', note: 'Indonesian UI strings' },
+          { name: 'values/themes.xml', type: 'xml', note: 'Material 3 Dark' },
+          { name: 'xml/file_paths.xml', type: 'xml', note: 'FileProvider paths' },
+          { name: 'xml/backup_rules.xml', type: 'xml' },
+          { name: 'xml/data_extraction_rules.xml', type: 'xml' },
+        ]},
+        { name: 'AndroidManifest.xml', type: 'xml', note: 'Nearby + BT + WiFi perms' },
+      ]},
+      { name: 'schemas/', type: 'dir', open: false, children: [
+        { name: '(auto-generated)', type: 'json', note: 'Room schema exports by KAPT' },
+      ]},
+      { name: 'build.gradle.kts', type: 'gradle', note: 'app module deps + KAPT config' },
+      { name: 'proguard-rules.pro', type: 'kt' },
+    ]},
+    { name: 'docs/', type: 'dir', open: true, children: [
+      { name: 'architecture.md', type: 'md', note: 'Clean Arch + MVVM diagram' },
+      { name: 'crypto-spec.md', type: 'md', note: 'AES-256-GCM + HMAC spec' },
+      { name: 'mesh-routing.md', type: 'md', note: 'TTL, routing table, dedup' },
+      { name: 'setup-guide.md', type: 'md', note: 'SDK, build, deploy steps' },
+      { name: 'phase1-discovery.md', type: 'md', note: '✅ Phase 1 done — verified 2 device' },
+    ]},
+    { name: 'gradle/', type: 'dir', open: false, children: [
+      { name: 'libs.versions.toml', type: 'gradle', note: 'Version catalog — semua deps' },
+      { name: 'gradle-daemon-jvm.properties', type: 'gradle', note: 'JVM 21 Temurin' },
+      { name: 'wrapper/gradle-wrapper.properties', type: 'gradle', note: 'Gradle 8.13-bin' },
+    ]},
+    { name: '.github/', type: 'dir', open: false, children: [
+      { name: 'copilot-instructions.md', type: 'md', note: 'AI coding reference — 14 sections' },
+    ]},
+    { name: '.vscode/', type: 'dir', open: false, children: [
+      { name: 'settings.json', type: 'json', note: 'Kotlin + Android ext config' },
+      { name: 'tasks.json', type: 'json', note: '12 Build / ADB / Test tasks' },
+    ]},
+    { name: 'build.gradle.kts', type: 'gradle', note: 'project-level + plugins' },
+    { name: 'settings.gradle.kts', type: 'gradle', note: 'Foojay toolchain resolver' },
+    { name: 'gradle.properties', type: 'gradle', note: 'JDK 21, config-cache=false' },
+    { name: 'local.properties', type: 'json', note: 'sdk.dir — gitignored' },
+    { name: '.gitignore', type: 'md' },
+    { name: 'README.md', type: 'md', note: 'सामुहित — Setup guide' },
+  ]}
+];
+
+function renderTree(items, container) {
+  items.forEach(item => {
+    const wrapper = document.createElement('div');
+
+    if (item.type === 'dir') {
+      const row = document.createElement('div');
+      row.className = 'tree-item';
+      const btn = document.createElement('button');
+      btn.className = 'toggle-btn';
+      btn.textContent = item.open ? '▾' : '▸';
+      const icon = document.createElement('span');
+      icon.className = 'tree-icon';
+      icon.textContent = item.open ? '📂' : '📁';
+      const label = document.createElement('span');
+      label.className = 'tree-label dir';
+      label.textContent = item.name;
+      row.appendChild(btn); row.appendChild(icon); row.appendChild(label);
+
+      const children = document.createElement('div');
+      children.className = 'tree-children tree-indent' + (item.open ? '' : ' collapsed');
+
+      if (item.children) renderTree(item.children, children);
+
+      row.addEventListener('click', () => {
+        item.open = !item.open;
+        btn.textContent = item.open ? '▾' : '▸';
+        icon.textContent = item.open ? '📂' : '📁';
+        children.classList.toggle('collapsed', !item.open);
+      });
+
+      wrapper.appendChild(row);
+      wrapper.appendChild(children);
+    } else {
+      const ext = item.type;
+      const icons = { kt: '🔷', xml: '🟩', gradle: '🟧', json: '🟨', md: '🟢' };
+      const row = document.createElement('div');
+      row.className = 'tree-item';
+      row.style.paddingLeft = '18px';
+      const icon = document.createElement('span');
+      icon.className = 'tree-icon';
+      icon.textContent = icons[ext] || '📄';
+      const label = document.createElement('span');
+      label.className = 'tree-label';
+      label.textContent = item.name;
+      row.appendChild(icon);
+      row.appendChild(label);
+      if (item.note) {
+        const note = document.createElement('span');
+        note.className = 'tree-note';
+        note.textContent = item.note;
+        row.appendChild(note);
+      }
+      wrapper.appendChild(row);
+    }
+
+    container.appendChild(wrapper);
+  });
+}
+
+renderTree(tree, document.getElementById('file-tree'));
+</script>
+</body>
+</html>
