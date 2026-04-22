@@ -31,10 +31,10 @@ jobs:
       - name: Prepare static files
         run: |
           [ -f index.html ] || { echo "::error::index.html not found"; exit 1; }
-          [ -f samuhita_blueprint.html ] || { echo "::error::samuhita_blueprint.html not found"; exit 1; }
+          [ -f samuhita.html ] || { echo "::error::samuhita.html not found"; exit 1; }
           mkdir -p public
           cp index.html public/index.html
-          cp samuhita_blueprint.html public/samuhita_blueprint.html
+          cp samuhita.html public/samuhita.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
